@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom';
 
 import Header from './partials/Header';
 import Footer from './partials/Footer'
@@ -11,8 +12,28 @@ const Home = () => {
         var email_element = document.getElementById("tooltiptext_email");
         email_element.classList.toggle("tooltiptext_reveal");
     }
-      
 
+    const [state, setState] = useState({});
+    const [loading, setLoading] = useState(true);
+
+    const fetchItems = async () => {
+        await fetch('/api/post')
+        .then((response) => {
+            return response.json();
+          })
+        .then((data) => {
+            setState(data);
+            setLoading(false);
+            console.log(data)
+            }
+        );
+    }
+
+    useEffect(() => {
+        loading ? fetchItems() : null;
+    });
+
+      
     return (
         <div>
             <Header/>
@@ -50,25 +71,30 @@ const Home = () => {
 
         
 
+        {!loading && state.posts.length > 0 ?
+        <div>
         <h2 className="SectionTitle">Recent Uploads</h2>
           <div className="featuredImages recentPosts">
             <div className="miniGallery">
-                                <a style={{"backgroundImage:" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}} className="image_link" href="single.php?post=137">
-                    <div className="filter">
-                       <h2 className="name"> Unity Platform Game Course </h2>   </div></a>                  <a style={{"backgroundImage:" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}}  className="image_link" href="single.php?post=136">
-                    <div className="filter">
-                       <h2 className="name"> Garden 3 </h2>   </div></a>                  <a style={{"backgroundImage:" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}}  className="image_link" href="single.php?post=135">
-                    <div className="filter">
-                       <h2 className="name"> Garden 2 </h2>   </div></a>                  <a style={{"backgroundImage:" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}}  className="image_link" href="single.php?post=134">
-                    <div className="filter">
-                       <h2 className="name"> Garden 4 </h2>   </div></a>                  <a style={{"backgroundImage:" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}}  className="image_link" href="single.php?post=133">
-                    <div className="filter">
-                       <h2 className="name"> Garden 2 </h2>   </div></a>                  <a style={{"backgroundImage:" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}}  className="image_link" href="single.php?post=131">
-                    <div className="filter">
-                       <h2 className="name"> Office  </h2>   </div></a>
-                </div>
+              {state.posts.map((post, i = 0) => {
+                if(i < 6) {
+                  return (
+                    <Link style={{"backgroundImage:" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}} className="image_link" to={`/post/${post.id}`}>
+                      <div className="filter">
+                        <h2 className="name"> {post.title} </h2>
+                      </div>
+                    </Link> 
+                  )
+                }
+                i++;
+              })}
+            </div>
+    
+  
               </div>
               <a className="viewMoreBtn" href="list_posts.php">View More...</a>
+            </div>
+            : null }
             
                           <h2 className="SectionTitle ">About Me</h2>
               <div className="aboutSection">
