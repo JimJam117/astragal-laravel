@@ -21,7 +21,7 @@ class PostController extends Controller
         $categories = Post::All();
         $recent_category = $categories->first();
 
-        return response()->json([$posts, $recent_category, $recent_post]);
+        return response()->json(["posts"=>$posts, "recent_category"=>$recent_category, "recent_post"=>$recent_post]);
     }
 
     /**
@@ -51,21 +51,21 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($post)
     {
         // if the post is null return a redirect
-        if ($id == null) {
+        if ($post == null) {
             return response()->error("Error");
         }
 
         //grab the post
-        $id = \App\Post::where("slug", $id)->whereNull('deleted_at')->firstOrFail();
+        $post = \App\Post::where("id", $post)->whereNull('deleted_at')->firstOrFail();
 
         // grab the most recent post, if it is the same as the $id then find the next most recent one
-        $ids = Post::All();
-        $recent_post = $ids->first();
-        foreach ($ids as $item) {
-            if($item->slug != $id->slug) {
+        $posts = Post::All();
+        $recent_post = $posts->first();
+        foreach ($posts as $item) {
+            if($item->slug != $post->slug) {
                 $recent_post = $item;
                 break;
             }
@@ -73,11 +73,11 @@ class PostController extends Controller
 
 
         $category = null;
-        if($id->category != null) {
-            $category = $id->category;
+        if($post->category != null) {
+            $category = $post->category;
         }
 
-        return response()->json([$post, $recent_post, $recent_category]);
+        return response()->json(["post"=>$post, "category"=>$category, "recent_post"=>$recent_post]);
     }
 
     /**
