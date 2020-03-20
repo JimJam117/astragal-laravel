@@ -1,24 +1,4 @@
-@font-face {
-    font-family: "Retron";
-    src: Arial;
-  }
-  @font-face {
-    font-family: "Aileron";
-    src: Arial;
-  }
-  @font-face {
-    font-family: "OpenSans";
-    src: Arial;
-  }
-  @font-face {
-    font-family: "Nunito-Regular";
-    src: Arial;
-  }
-  @font-face {
-    font-family: "Nunito-SemiBold";
-    src: Arial;
-  }
-  
+
   *{
     text-decoration: none;
     margin: 0;
@@ -131,7 +111,7 @@
   }
   .top_band, .top_band a:visited, .top_band a{
     color: #cccccc;
-    font-family: "Aileron";
+    font-family: Roboto;
     display: block;
   }
   .band_top_section{
@@ -257,7 +237,7 @@
     flex-flow: wrap;
     float: right;
     width: 100%;
-    font-family: "OpenSans";
+    font-family: Roboto;
     overflow: hidden;
   }
   
@@ -280,7 +260,7 @@
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    font-family: "Aileron";
+    font-family: Roboto;
     overflow-anchor: visible;
   }
   
@@ -349,7 +329,7 @@
   .landingPage_title{
   
     font-size: 4em;
-    font-family: "Aileron";
+    font-family: Roboto;
   }
   
   .homePageSectionBk{
@@ -358,7 +338,7 @@
   }
   
   .homePageSection{
-    font-family: "Aileron";
+    font-family: Roboto;
     padding: 30px 60px;
     text-align: center;
   }
@@ -490,7 +470,7 @@
   }
   
   .single_right{
-    font-family: "Aileron";
+    font-family: Roboto;
     width: 50%;
     padding: 5vw;
   }
@@ -509,7 +489,7 @@
   }
   .single_links a{
     text-decoration: none;
-    font-family: "Aileron";
+    font-family: Roboto;
     padding: 1em 1em;
     margin: 1em;
     color: white;
@@ -551,7 +531,7 @@
   }
   
   .title_area h1{
-    font-family: "Aileron";
+    font-family: Roboto;
     color: #eee;
   }
   
@@ -590,7 +570,7 @@
     background-position: center;
   }
   .album_link_name{
-    font-family: "Nunito-SemiBold";
+    font-family: Nunito;
     font-size: 2em;
   }
   .album_link_text{
@@ -772,7 +752,7 @@
     background-color: #e1e1e1e0;
     width: 100%;
     text-align: center;
-    font-family: "Aileron";
+    font-family: Roboto;
   }
   .frontend_pagination{
     margin-right: 1em;
@@ -816,7 +796,7 @@
   
   .footer
   {
-    font-family: "Aileron";
+    font-family: Roboto;
     background-color: #e1e1e1e0;
     text-align: center;
     padding: 2em 0;

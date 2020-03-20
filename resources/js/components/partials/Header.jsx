@@ -33,13 +33,13 @@ const Header = () => {
 
     <ul className="main_links">
         <li className="main_link_header_li">
-          <Link className="main_link_header" href="/home">HOME</Link>
+          <Link className="main_link_header" to="/home">HOME</Link>
         </li>
         <li className="main_link_header_li">
-          <Link className="main_link_header" href="/Posts">POSTS</Link>
+          <Link className="main_link_header" to="/Posts">POSTS</Link>
         </li>
         <li className="main_link_header_li">
-          <Link className="main_link_header" href="/Albums">ALBUMS</Link>
+          <Link className="main_link_header" to="/Albums">ALBUMS</Link>
         </li>
     </ul>
 
