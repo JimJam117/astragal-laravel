@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Header from './partials/Header';
+import Footer from './partials/Footer'
+
 
 const Home = () => {
 
@@ -89,10 +91,7 @@ const Home = () => {
                                 </div>
 
 
-                <div className="contactSection">
-                  <hr />
-                  astra.london24@gmail.com <a href="https://www.jsparrow.uk"> astralondon.me  by James Sparrow </a>
-                </div>
+                <Footer></Footer>
 
 
 
