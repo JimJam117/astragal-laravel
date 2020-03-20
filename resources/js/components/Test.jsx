@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import Link from './Link';
+
 const App = () => {
 
     const [state, setState] = useState({});
@@ -39,7 +40,7 @@ const App = () => {
 export default App;
 
 
-if (document.getElementById('app')) {
-    ReactDOM.render(<App />, document.getElementById('app'));
+if (document.getElementById('Test')) {
+    ReactDOM.render(<Test />, document.getElementById('Test'));
 }
 
