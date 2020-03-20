@@ -2,7 +2,7 @@ import React from 'react';
 import '../css/styles.css';
 import ReactDOM from 'react-dom';
 
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 
 
 import Home from './components/Home';
@@ -12,6 +12,8 @@ import Albums from './components/Albums';
 
 import PostSingle from './components/PostSingle';
 import AlbumSingle from './components/AlbumSingle';
+
+import Search from './components/Search';
 
 
 
@@ -30,6 +32,9 @@ function App() {
 
           <Route path="/post/:id" component={PostSingle}/>
           <Route path="/album/:id" component={AlbumSingle}/>
+
+          <Route path="/search/:query" component={Search}/>
+          <Redirect path="/search" to="/"/>
 
           {/* <Route path="/search/:query" component={SearchResults}/> */}
 
