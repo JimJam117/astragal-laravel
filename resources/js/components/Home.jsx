@@ -92,7 +92,7 @@ const Home = () => {
     
   
               </div>
-              <a className="viewMoreBtn" href="list_posts.php">View More...</a>
+              <a className="viewMoreBtn" href="/posts">View More...</a>
             </div>
             : null }
             

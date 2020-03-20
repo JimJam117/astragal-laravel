@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use \App\Post;
 use \App\Category;
+use \App\Post;
 
-class PostController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class PostController extends Controller
         $categories = Category::orderBy('updated_at', 'DESC')->where("deleted_at", null)->get();
         $recent_category = $categories->first();
 
-        return response()->json(["posts"=>$posts, "recent_category"=>$recent_category, "recent_post"=>$recent_post]);
+        return response()->json(["categories"=>$categories, "recent_category"=>$recent_category, "recent_post"=>$recent_post]);
     }
 
     /**
@@ -52,33 +52,34 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($post)
+    public function show($category)
     {
-        // if the post is null return a redirect
-        if ($post == null) {
-            return response()->error("Error");
+        if ($category == null) {
+            return redirect("/albums");
         }
+        $category = Category::where("id", $category)->whereNull('deleted_at')->firstOrFail();
 
-        //grab the post
-        $post = \App\Post::where("id", $post)->whereNull('deleted_at')->firstOrFail();
+        
+        $recent_posts = Post::orderBy('updated_at', 'DESC')->where("deleted_at", null)->get();
+        $recent_post = $recent_posts->first();
 
-        // grab the most recent post, if it is the same as the $id then find the next most recent one
-        $posts = Post::All();
-        $recent_post = $posts->first();
-        foreach ($posts as $item) {
-            if($item->slug != $post->slug) {
-                $recent_post = $item;
-                break;
+        // if recent posts is more than 3, cut it down to a max of 3
+        if(count($recent_posts) > 3) {
+            $newArray = [];
+            $i = 0;
+            foreach ($recent_posts as $item) {
+
+                if($i < 3) { $newArray[] = $item; $i++;}
+                else{ break;} 
             }
+
+            $recent_posts = $newArray;
         }
 
+        $categories = Category::orderBy('updated_at', 'DESC')->where("deleted_at", null)->get();
+        $recent_category = $categories->first();        
 
-        $category = null;
-        if($post->category != null) {
-            $category = $post->category;
-        }
-
-        return response()->json(["post"=>$post, "category"=>$category, "recent_post"=>$recent_post]);
+        return response()->json(["category"=>$category, "recent_category"=>$recent_category, "recent_post"=>$recent_post, "recent_posts"=>$recent_posts]);
     }
 
     /**
