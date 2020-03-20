@@ -9,17 +9,28 @@ const Albums = () => {
 
     const [state, setState] = useState({});
     const [loading, setLoading] = useState(true);
+    
+    // paginaton
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(4);
+    const [isLastPage, setIsLastPage] = useState(false);
+
+    let indexOfLastPost = currentPage * postsPerPage;
+    let indexOfFirstPost = indexOfLastPost - postsPerPage;
 
     const fetchItems = async () => {
         await fetch('/api/category')
         .then((response) => {
-            console.log(response);
             return response.json();
           })
         .then((data) => {
-            setState(data);
+
+            // add the current range of posts to the state
+            let currentItems = data.categories.slice(indexOfFirstPost, indexOfLastPost);
+            indexOfLastPost >= data.categories.length ? setIsLastPage(true) : setIsLastPage(false);
+            setState({...data, currentItems});
+
             setLoading(false);
-            console.log(data)
             }
         );
     }
@@ -28,33 +39,51 @@ const Albums = () => {
         loading ? fetchItems() : null;
     });
 
+
+    // paginator page functions
+    const nextPage = () => {
+        setCurrentPage(currentPage + 1);
+        setLoading(true);
+    }
+
+    const prevPage = () => {
+        setCurrentPage(currentPage - 1);
+        setLoading(true);
+    }
+
     return (
         <div>
             <Header />
 
             <div id="mainContent" className="main_content">
                 {loading ? "loading..." : 
-                    <div class="alb_area_container"> 
-                        <div class="alb_area">
-                        {
-                            state.categories.map((category) => {
-                                return (
-                                <Link class="album_link" to={`/album/${category.id}`}>
-                                    <div class="album_link_img" style={{ "backgroundImage" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}}></div>
+                    <div>
+                        <div class="alb_area_container"> 
+                            <div class="alb_area">
+                            {
+                                state.currentItems.map((category) => {
+                                    return (
+                                    <Link class="album_link" to={`/album/${category.id}`}>
+                                        <div class="album_link_img" style={{ "backgroundImage" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}}></div>
 
-                                    <div class="album_link_text">
-                                        <h2 class="album_link_name">{category.title}</h2>
-                                        <p class="album_link_desc"> {ReactHtmlParser(category.body)} </p>
-                                    </div>
-                                </Link>
-                                )
-                            })
+                                        <div class="album_link_text">
+                                            <h2 class="album_link_name">{category.title}</h2>
+                                            <p class="album_link_desc"> {ReactHtmlParser(category.body)} </p>
+                                        </div>
+                                    </Link>
+                                    )
+                                })
 
-                        }
+                            }
+                            </div>
+                        </div>
+                    
+                        <div class="frontend_pagination_container">
+                            {currentPage > 1 && <button onClick={() => prevPage()}>Prev page</button>}
+                            {!isLastPage && <button onClick={() => nextPage()}>Next page</button>}
                         </div>
                     </div>
                 }
-
                 <Footer></Footer>
             </div>
 

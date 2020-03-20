@@ -19,7 +19,6 @@ const Posts = () => {
     const fetchItems = async () => {
         await fetch('/api/post')
         .then((response) => {
-            console.log(response);
             return response.json();
           })
         .then((data) => {
