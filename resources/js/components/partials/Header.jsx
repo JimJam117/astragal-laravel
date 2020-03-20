@@ -16,7 +16,7 @@ const Header = () => {
                     <span id="bMenuText" className={burgerMenu ? "bMenuTextHideMessage" : "bMenuTextShowMessage"}>Hide</span>
                 </button>
 
-                <div className="profile_image" style={{"backgroundImage": "url('img/uploads/pref/profile_picture.5e21d3caa96024.91370977.jpeg')"}} alt="Astra London"></div>
+                <div className="profile_image" style={{"backgroundImage": "url('/img/pref/profilePic.jpeg')"}} alt="Astra London"></div>
                 <h2 className="title">Astra London</h2>
                 <h3 className="subtitle">Portfolio Gallery</h3>
           </div>
