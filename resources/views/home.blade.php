@@ -20,8 +20,12 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    @auth
+        <a class="toBackend" href="/backend">Go To Backend</a>
+    @endauth
     <div id="app"></div>
-            
+    
     <script src="/js/app.js"></script>
 
 

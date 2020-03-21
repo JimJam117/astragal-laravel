@@ -22,7 +22,7 @@ const Posts = () => {
             return response.json();
           })
         .then((data) => {
-
+ 
             // add the current range of posts to the state
             let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
             indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);

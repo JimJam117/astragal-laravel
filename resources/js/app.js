@@ -13,5 +13,3 @@ require('./bootstrap');
  */
 
 require('./App');
-require('./components/Example');
-require('./components/Test');

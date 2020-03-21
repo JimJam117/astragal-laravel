@@ -7,6 +7,7 @@ const Header = () => {
     const [search, setSearch] = useState("");
 
     const handleSearchForm = (e) => {
+      e.preventDefault();
       setSearch(e.target.value);
     }
 

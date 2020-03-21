@@ -15,6 +15,25 @@
 // Route::get('/api/post/{post}', 'PostController@show_api');
 // Route::get('/api/search/{search}', 'SearchController@show_api');
 
+Auth::routes();
+
+Route::get('/backend', 'BackendController@index')->middleware('auth');
+Route::get('/backend/homepage', 'BackendController@homepage')->middleware('auth');
+Route::get('/backend/about', 'BackendController@about')->middleware('auth');
+
+Route::get('/backend/posts', 'BackendController@posts')->middleware('auth');
+Route::get('/backend/post/add', 'BackendController@addPost')->middleware('auth');
+Route::get('/backend/post/{id}/edit', 'BackendController@editPost')->middleware('auth');
+Route::get('/backend/post/{id}', 'BackendController@post')->middleware('auth');
+
+
+Route::get('/backend/albums', 'BackendController@albums')->middleware('auth');
+Route::get('/backend/album/add', 'BackendController@addAlbum')->middleware('auth');
+Route::get('/backend/album/{id}/edit', 'BackendController@editAlbum')->middleware('auth');
+Route::get('/backend/album/{id}', 'BackendController@album')->middleware('auth');
+
+
+
 Route::get('/{path?}', function () {
     return view('home');
 })->where('path', '.*');
