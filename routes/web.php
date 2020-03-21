@@ -26,12 +26,16 @@ Route::get('/backend/post/add', 'BackendController@addPost')->middleware('auth')
 Route::get('/backend/post/{id}/edit', 'BackendController@editPost')->middleware('auth');
 Route::get('/backend/post/{id}', 'BackendController@post')->middleware('auth');
 
+Route::get('/backend/post/{id}/delete', 'BackendController@delete_confirm_post')->middleware('auth');
+Route::delete('/backend/post/{id}', 'BackendController@destroy_post')->middleware('auth');
 
 Route::get('/backend/albums', 'BackendController@albums')->middleware('auth');
 Route::get('/backend/album/add', 'BackendController@addAlbum')->middleware('auth');
 Route::get('/backend/album/{id}/edit', 'BackendController@editAlbum')->middleware('auth');
 Route::get('/backend/album/{id}', 'BackendController@album')->middleware('auth');
 
+Route::get('/backend/album/{id}/delete', 'BackendController@delete_confirm_album')->middleware('auth');
+Route::delete('/backend/album/{id}', 'BackendController@destroy_album')->middleware('auth');
 
 
 Route::get('/{path?}', function () {

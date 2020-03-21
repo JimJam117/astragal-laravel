@@ -88,4 +88,29 @@ class BackendController extends Controller
     public function about() {
         return view('backend.about');
     }
+
+    public function delete_confirm_post($id) {
+        $post = \App\Post::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+        return view('confirm-delete', compact('post'));
+   }
+
+    public function delete_confirm_album($id) {
+        $category = \App\Category::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+        return view('confirm-delete', compact('category'));
+   }
+
+   public function destroy_post($id) {
+    $post = \App\Post::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+    $post->delete();
+    return redirect('/backend/posts');
+   }
+
+   public function destroy_album($id) {
+    $category = \App\Category::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+    $category->delete();
+    return redirect('/backend/albums');
+   }
+
 }
+
+

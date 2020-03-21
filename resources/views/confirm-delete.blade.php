@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.backend')
 
 @section('title')
     Confirm Delete
@@ -7,7 +7,7 @@
 @section('content')
 
 @isset($post)
-<form action="/post/{{$post->slug}}" method="POST">
+<form action="/backend/post/{{$post->id}}" method="POST">
     @csrf
     @method('DELETE')
 
@@ -18,12 +18,12 @@
 @endisset
 
 @isset($category)
-<form action="/category/{{$category->title}}" method="POST">
+<form action="/backend/album/{{$category->id}}" method="POST">
     @csrf
     @method('DELETE')
 
     <h1>Confrim deleting {{$category->title}}</h1>
-    <p>Are you sure you want to delete this category?</p>
+    <p>Are you sure you want to delete this album?</p>
     <button type="submit">Confirm</button>
 </form>
 @endisset

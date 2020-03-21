@@ -50,9 +50,7 @@
                 <td>
                     <a href="/post/{{ $post->id }}" class="btn btnBlock">View</a>
                     <a href="/backend/post/{{ $post->id }}/edit" class="btn btn-warning btnBlock">Edit</a>
-                    <a class="btn btn-danger btnBlock"
-                        onclick="javascript: return confirm('Please confirm deletion of this post');"
-                        href="/backend/post/{{$post->id}}/delete-confirm';">Delete</a>
+                    <a class="btn btn-danger btnBlock" href="/backend/post/{{$post->id}}/delete">Delete</a>
                     @isset($post->category_id)
                         <a href="/backend/album/{{$post->category_id}}" class="btn btn-green btnBlock">Album</a> 
                     @endisset

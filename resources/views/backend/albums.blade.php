@@ -31,7 +31,7 @@
                     <a href="/album/{{ $category->id }}" class="btn btnBlock">View</a>
                     <a href="/backend/album/{{ $category->id }}/edit" class="btn btn-warning btnBlock">Edit</a>
                     <a href="/backend/album/{{ $category->id  }}" class="btn btnBlock">Details</a>
-                    <a class="btn btn-danger btnBlock" href="/backend/album/{{$category->id}}/delete-confirm';">Delete</a>
+                    <a class="btn btn-danger btnBlock" href="/backend/album/{{$category->id}}/delete">Delete</a>
                        
                 </td>
             </tr>

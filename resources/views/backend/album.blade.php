@@ -90,7 +90,7 @@
                 <td>
                     <a href="/post/{{ $post->id }}" class="btn btnBlock">View</a>
                     <a href="/backend/post/{{ $post->id }}/edit" class="btn btn-warning btnBlock">Edit</a>
-                    <a class="btn btn-danger btnBlock" href="/backend">Delete</a>
+                    <a class="btn btn-danger btnBlock" href="/backend/post/{{ $post->id }}/delete">Delete</a>
                 </td>
             </tr>
             @endforeach
