@@ -57,12 +57,16 @@ class BackendController extends Controller
         return view('backend.albums', compact('posts', 'categories', 'recent_category', 'recent_post'));
     }
 
-    public function post() {
-        return view('backend.post');
-    }
+    public function album($id) {
+        if ($id == null) {
+            return redirect("/backend/albums");
+        }
+        $category = Category::where("id", $id)->whereNull('deleted_at')->firstOrFail();
 
-    public function album() {
-        return view('backend.album');
+        $posts = Post::orderBy('created_at', 'DESC')->where("deleted_at", null)->where("category_id", $id)->paginate(5);
+
+
+        return view('backend.album', compact('posts', 'category'));
     }
 
     public function addPost() {
