@@ -1,10 +1,53 @@
 @extends('layouts.backend')
 
 @section('content')
+<h1 class="page-header"><svg class="svg-inline--fa fa-folder-open fa-w-18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="folder-open" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M572.694 292.093L500.27 416.248A63.997 63.997 0 0 1 444.989 448H45.025c-18.523 0-30.064-20.093-20.731-36.093l72.424-124.155A64 64 0 0 1 152 256h399.964c18.523 0 30.064 20.093 20.73 36.093zM152 224h328v-48c0-26.51-21.49-48-48-48H272l-64-64H48C21.49 64 0 85.49 0 112v278.046l69.077-118.418C86.214 242.25 117.989 224 152 224z"></path></svg><!-- <i class="fas fa-folder-open"></i> --> Albums</h1>
 
+<div class="table">
 
-    <h1><svg class="svg-inline--fa fa-question-circle fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="question-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"></path></svg><!-- <i class="fas fa-question-circle"></i> --> Albums</h1>
-    <p>astralondon.me  by James Sparrow</p>
-    <a href="https://www.jsparrow.uk">https://www.jsparrow.uk</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th class="thumbnailHideColumn">Thumbnail</th>
+                <th class="actionsColumn">Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach ($categories as $category)
+            <tr>
+                <td>
+                    <h4>{{ $category->title }}</h4>
+                </td>
+                <td class="thumbnailHideColumn"
+                    style="background-image: url('img/uploads/image.5e7510fa2789a4.69438516.png'); background-size: contain; background-repeat: no-repeat;">
+                </td>
+
+                
+
+                <td>
+                    <a href="/album/{{ $category->id }}" class="btn btnBlock">View</a>
+                    <a href="/backend/album/{{ $category->id }}/edit" class="btn btn-warning btnBlock">Edit</a>
+                    <a href="/backend/album/{{ $category->id  }}" class="btn btnBlock">Details</a>
+                    <a class="btn btn-danger btnBlock" href="/backend/album/{{$category->id}}/delete-confirm';">Delete</a>
+                       
+                </td>
+            </tr>
+            @endforeach
+
+        </tbody>
+    </table>
+</div>
+<br>
+
+<div class="backend_pagination_container">
+    {{ $categories->links() }}
+</div>
+
+<br><br>
+<a class="btn" href="/backend/album/add">Create Album</a>
+
 
 @endsection
