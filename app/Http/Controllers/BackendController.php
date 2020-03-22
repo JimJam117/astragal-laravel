@@ -90,6 +90,19 @@ class BackendController extends Controller
         return view('backend.editPost', compact('post', 'categories'));
     }
 
+    public function addAlbum() {
+        return view('backend.addAlbum');
+    }
+
+    public function editAlbum($id) {
+        // get user and authorize
+        $category = \App\Category::where('id', $id)->firstOrFail();
+
+        return view('backend.editAlbum', compact('category'));
+    }
+
+
+
     /**
      * Store post
      * 
@@ -100,12 +113,10 @@ class BackendController extends Controller
             'body' => 'required',
             'category_id' => 'nullable',
             'image' => 'image|required',
-
         ]);
 
         $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
 
-       
         if ($data['image']) {
             $imgPath = request('image')->store('uploads', 'public');
 
@@ -119,27 +130,46 @@ class BackendController extends Controller
                 'image' => $imgPathWithStorage,
             ]);
         }
-        else{
-            return "error with image upload";
+        else{ return "error with image upload"; }
+
+
+        return redirect("/backend/posts");
+    }
+
+        /**
+     * Store album
+     * 
+     */
+    public function storeAlbum(){
+        $data = request()->validate([
+            'title' => 'required',
+            'body' => 'required',
+            'image' => 'image|required',
+        ]);
+
+        $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+
+        if ($data['image']) {
+            $imgPath = request('image')->store('uploads', 'public');
+
+            // adds the storage dir to the front of the path
+            $imgPathWithStorage = '/storage/' . $imgPath;
+
+            Category::create([
+                'title' => $data['title'],
+                'body' => $purified_body,
+                'image' => $imgPathWithStorage,
+            ]);
         }
-   
-        $message = "Successfully added post!";
+        else{ return "error with image upload"; }
 
-        return redirect("/backend/posts", compact('message'));
-        
+        return redirect("/backend/albums");
     }
 
 
 
 
 
-    public function addAlbum() {
-        return view('backend.addAlbum');
-    }
-
-    public function editAlbum() {
-        return view('backend.editAlbum');
-    }
 
     public function about() {
         return view('backend.about');

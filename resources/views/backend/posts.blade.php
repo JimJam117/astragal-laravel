@@ -31,11 +31,11 @@
                     style="background-image: url('{{ $post->image }}'); background-size: contain; background-repeat: no-repeat;">
                 </td>
 
-                @isset($post->category_id)
+                @if($post->category_id != 0)
                     @php
                         $categoryName = "";
                         foreach ($categories as $category) {
-                            if ($category == $post->category_id)
+                            if ($category->id == $post->category_id)
                             {
                                 $categoryName = $category->title;
                             }
@@ -44,16 +44,16 @@
                     <td class="albumColumn">{{ $categoryName }}</td> 
                 @else
                     <td class="albumColumn">None</td>
-                @endisset
+                @endif
                 
 
                 <td>
                     <a href="/post/{{ $post->id }}" class="btn btnBlock">View</a>
                     <a href="/backend/post/{{ $post->id }}/edit" class="btn btn-warning btnBlock">Edit</a>
                     <a class="btn btn-danger btnBlock" href="/backend/post/{{$post->id}}/delete">Delete</a>
-                    @isset($post->category_id)
+                    @if($post->category_id != 0)
                         <a href="/backend/album/{{$post->category_id}}" class="btn btn-green btnBlock">Album</a> 
-                    @endisset
+                    @endif
                 </td>
             </tr>
             @endforeach

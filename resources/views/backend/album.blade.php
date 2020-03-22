@@ -27,7 +27,7 @@
                             </path>
                         </svg><!-- <i class="fas fa-file-image"></i> -->Album Cover:</h3>
                     <div class="alb_details_pic"
-                        style="background-image: url('img/uploads/album_covers/album.5e4979d16e7074.26287789.jpg'"
+                        style="background-image: url('{{ $category->image }}'"
                         alt="All"></div>
                 </td>
             </tr>
@@ -84,7 +84,7 @@
             <tr>
                 <td>{{ $post->title }}</td>
                 <td class="thumbnailColumn"
-                    style="background-image: url('img/uploads/image.5e7510fa2789a4.69438516.png'); background-size: contain; background-repeat: no-repeat;">
+                    style="background-image: url('{{ $post->image }}'); background-size: contain; background-repeat: no-repeat;">
                 </td>
 
                 <td>

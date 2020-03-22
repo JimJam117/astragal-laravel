@@ -22,7 +22,7 @@
                     <h4>{{ $category->title }}</h4>
                 </td>
                 <td class="thumbnailHideColumn"
-                    style="background-image: url('img/uploads/image.5e7510fa2789a4.69438516.png'); background-size: contain; background-repeat: no-repeat;">
+                    style="background-image: url('{{ $category->image }}'); background-size: contain; background-repeat: no-repeat;">
                 </td>
 
                 
