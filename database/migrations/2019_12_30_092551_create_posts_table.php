@@ -14,11 +14,10 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('title');
-            $table->string('slug')->unique();
             $table->text('body')->nullable();
             $table->string('image')->nullable();
             $table->softDeletes();

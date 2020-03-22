@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Purifier;
 use \App\Post;
 use \App\Category;
 
 class BackendController extends Controller
 {
+    // purifier config 
+    public $purifierAllowedElements = 'div,h1,h2,h3,h4,h5,h6,code,b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]';
+
 
     // pagination and get posts/categories functions
     function paginatePosts($paginate) {
@@ -69,16 +73,68 @@ class BackendController extends Controller
         return view('backend.album', compact('posts', 'category'));
     }
 
+    // Add and edit post
+
     public function addPost() {
-        return view('backend.addPost');
+        $categories = self::allCategories();
+
+        return view('backend.addPost', compact('categories'));
     }
+
+    public function editPost($id) {
+        // get user and authorize
+        $post = \App\Post::where('id', $id)->firstOrFail();
+
+        $categories = self::allCategories();
+
+        return view('backend.editPost', compact('post', 'categories'));
+    }
+
+    /**
+     * Store post
+     * 
+     */
+    public function storePost(){
+        $data = request()->validate([
+            'title' => 'required',
+            'body' => 'required',
+            'category_id' => 'nullable',
+            'image' => 'image|required',
+
+        ]);
+
+        $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+
+       
+        if ($data['image']) {
+            $imgPath = request('image')->store('uploads', 'public');
+
+            // adds the storage dir to the front of the path
+            $imgPathWithStorage = '/storage/' . $imgPath;
+
+            auth()->user()->posts()->create([
+                'title' => $data['title'],
+                'body' => $purified_body,
+                'category_id' => $data['category_id'],
+                'image' => $imgPathWithStorage,
+            ]);
+        }
+        else{
+            return "error with image upload";
+        }
+   
+        $message = "Successfully added post!";
+
+        return redirect("/backend/posts", compact('message'));
+        
+    }
+
+
+
+
 
     public function addAlbum() {
         return view('backend.addAlbum');
-    }
-
-    public function editPost() {
-        return view('backend.editPost');
     }
 
     public function editAlbum() {

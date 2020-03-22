@@ -21,21 +21,47 @@ Route::get('/backend', 'BackendController@index')->middleware('auth');
 Route::get('/backend/homepage', 'BackendController@homepage')->middleware('auth');
 Route::get('/backend/about', 'BackendController@about')->middleware('auth');
 
+/** 
+ * POSTS
+ *  */ 
+// index
 Route::get('/backend/posts', 'BackendController@posts')->middleware('auth');
-Route::get('/backend/post/add', 'BackendController@addPost')->middleware('auth');
-Route::get('/backend/post/{id}/edit', 'BackendController@editPost')->middleware('auth');
-Route::get('/backend/post/{id}', 'BackendController@post')->middleware('auth');
 
+// add
+Route::get('/backend/post/add', 'BackendController@addPost')->middleware('auth');
+Route::post('/backend/post', 'BackendController@storePost')->middleware('auth');
+
+// edit
+Route::get('/backend/post/{id}/edit', 'BackendController@editPost')->middleware('auth');
+Route::put('/backend/post', 'BackendController@updatePost')->middleware('auth');
+
+// delete
 Route::get('/backend/post/{id}/delete', 'BackendController@delete_confirm_post')->middleware('auth');
 Route::delete('/backend/post/{id}', 'BackendController@destroy_post')->middleware('auth');
 
-Route::get('/backend/albums', 'BackendController@albums')->middleware('auth');
-Route::get('/backend/album/add', 'BackendController@addAlbum')->middleware('auth');
-Route::get('/backend/album/{id}/edit', 'BackendController@editAlbum')->middleware('auth');
-Route::get('/backend/album/{id}', 'BackendController@album')->middleware('auth');
 
+/** 
+ * ALBUMS
+ *  */ 
+// index
+Route::get('/backend/albums', 'BackendController@albums')->middleware('auth');
+
+// add
+Route::get('/backend/album/add', 'BackendController@addAlbum')->middleware('auth');
+Route::post('/backend/album', 'BackendController@storeAlbum')->middleware('auth');
+
+// edit
+Route::get('/backend/album/{id}/edit', 'BackendController@editAlbum')->middleware('auth');
+Route::put('/backend/album', 'BackendController@updateAlbum')->middleware('auth');
+
+// delete
 Route::get('/backend/album/{id}/delete', 'BackendController@delete_confirm_album')->middleware('auth');
 Route::delete('/backend/album/{id}', 'BackendController@destroy_album')->middleware('auth');
+
+// single
+Route::get('/backend/album/{id}', 'BackendController@album')->middleware('auth');
+
+
 
 
 Route::get('/{path?}', function () {
