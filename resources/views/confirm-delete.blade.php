@@ -28,5 +28,17 @@
 </form>
 @endisset
 
+
+@isset($image)
+<form action="/backend/post/{{$post_id}}/image/{{$image->id}}" method="POST">
+    @csrf
+    @method('DELETE')
+
+    <img src="{{ $image->image }}" style="max-width: 200px;" alt="">
+    <p>Are you sure you want to delete this extra image?</p>
+    <button type="submit">Confirm</button>
+</form>
+@endisset
+
     
 @endsection

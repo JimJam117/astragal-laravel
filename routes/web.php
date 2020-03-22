@@ -25,6 +25,10 @@ Route::put('/backend', 'BackendController@updateIndex')->middleware('auth');
 Route::put('/backend/homepage', 'BackendController@updateHomepage')->middleware('auth');
 
 
+// images
+Route::get('/backend/post/{post_id}/image/{id}/delete', 'BackendController@delete_confirm_image')->middleware('auth');
+Route::delete('/backend/post/{post_id}/image/{id}', 'BackendController@destroy_image')->middleware('auth');
+
 /** 
  * POSTS
  *  */ 
@@ -64,7 +68,6 @@ Route::delete('/backend/album/{id}', 'BackendController@destroy_album')->middlew
 
 // single
 Route::get('/backend/album/{id}', 'BackendController@album')->middleware('auth');
-
 
 
 

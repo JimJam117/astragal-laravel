@@ -7,6 +7,7 @@ use Purifier;
 use \App\Post;
 use \App\Category;
 use \App\Pref;
+use \App\Image;
 
 class BackendController extends Controller
 {
@@ -75,10 +76,11 @@ class BackendController extends Controller
     public function editPost($id) {
         // get user and authorize
         $post = \App\Post::where('id', $id)->firstOrFail();
+        $images = Image::where('post_id', $id)->get();
 
         $categories = self::allCategories();
 
-        return view('backend.editPost', compact('post', 'categories'));
+        return view('backend.editPost', compact('post', 'categories', 'images'));
     }
 
     public function addAlbum() {
@@ -141,6 +143,7 @@ class BackendController extends Controller
            'body' => 'required',
            'category_id' => 'nullable',
            'image' => 'image',
+           'image_extra' => 'image'
        ]);
 
        $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
@@ -164,10 +167,25 @@ class BackendController extends Controller
             'body' => $purified_body,
             'category_id' => $data['category_id'],
         ]);
-
        }
 
-       return redirect("/backend/posts");
+       if ($data['image_extra']) {
+            $imgPath = request('image_extra')->store('uploads', 'public');
+
+            // adds the storage dir to the front of the path
+            $imgPathWithStorage = '/storage/' . $imgPath;
+
+            Image::create([
+                'post_id' => $id,
+                'image' => $imgPathWithStorage,
+            ]);
+        }
+
+        $post = \App\Post::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+        $images = Image::where('post_id', $id)->get();
+        $categories = self::allCategories();
+        $success_message = "$post->title updated successfully!";
+       return view("backend.editPost", compact('categories', 'images', 'post', 'success_message'));
    }
 
 
@@ -249,7 +267,7 @@ class BackendController extends Controller
 
 
     public function about() {
-        self::prefInit();
+        dd(Image::all());
         return view('backend.about');
 
     }
@@ -313,6 +331,29 @@ class BackendController extends Controller
    }
 
    
+    public function delete_confirm_image($post_id, $id) {
+        $image = Image::where('id', $id)->firstOrFail();
+        return view('confirm-delete', compact('image', 'post_id'));
+    }
+
+    public function destroy_image($post_id, $id) {
+        $image = Image::where('id', $id)->firstOrFail();
+        $image->delete();
+        return redirect("/backend/post/$post_id/edit");
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
    // general settings
    public function index() {
 
