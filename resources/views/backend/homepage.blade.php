@@ -13,7 +13,9 @@
             </path>
         </svg><!-- <i class="fas fa-home"></i> --> Homepage Setup</h1>
 
-    <form method="post" enctype="multipart/form-data">
+    <form action="/backend/homepage" method="post" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
         <table class="form_table">
             <tbody>
                 <tr class="form-group">

@@ -328,6 +328,47 @@ class BackendController extends Controller
         return view('backend.homepage', compact('pref'));
     }
 
+    public function updateIndex(){
+        // get user and authorize
+        $pref = Pref::first();
+    
+       $data = request()->validate([
+           'main_text' => 'required',
+           'sub_text' => 'required',
+           'background_image_location' => 'image',
+           'profile_pic_location' => 'image',
+       ]);
+    
+       $purified_main = Purifier::clean($data['main_text'], array('HTML.Allowed' => $this->purifierAllowedElements));
+       $purified_sub = Purifier::clean($data['sub_text'], array('HTML.Allowed' => $this->purifierAllowedElements));
+
+       // if the request contains a background image
+       if (request('background_image_location')) {
+           $imgPath = request('background_image_location')->store('uploads', 'public');
+    
+           // adds the storage dir to the front of the path
+           $imgPathWithStorage = '/storage/' . $imgPath;
+           $pref->update([ 'background_image_location' => $imgPathWithStorage ]);
+       }
+
+        // if the request contains a profile image
+        if (request('profile_pic_location')) {
+            $imgPath = request('profile_pic_location')->store('uploads', 'public');
+        
+            // adds the storage dir to the front of the path
+            $imgPathWithStorage = '/storage/' . $imgPath;
+            $pref->update([ 'profile_pic_location' => $imgPathWithStorage ]);
+        }
+
+        $pref->update([
+            'main_text' => $purified_main,
+            'sub_text' => $purified_sub,
+        ]);        
+    
+       
+       return redirect("/backend");
+    }
+
 }
 
 

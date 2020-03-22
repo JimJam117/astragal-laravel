@@ -21,6 +21,10 @@ Route::get('/backend', 'BackendController@index')->middleware('auth');
 Route::get('/backend/homepage', 'BackendController@homepage')->middleware('auth');
 Route::get('/backend/about', 'BackendController@about')->middleware('auth');
 
+Route::put('/backend', 'BackendController@updateIndex')->middleware('auth');
+Route::put('/backend/homepage', 'BackendController@updateHomepage')->middleware('auth');
+
+
 /** 
  * POSTS
  *  */ 
