@@ -10,14 +10,14 @@
         <tbody><tr class="form-group">
           <td><h3 class="sub-header"><svg class="svg-inline--fa fa-font fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="font" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 416h-23.41L277.88 53.69A32 32 0 0 0 247.58 32h-47.16a32 32 0 0 0-30.3 21.69L39.41 416H16a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16h-19.58l23.3-64h152.56l23.3 64H304a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM176.85 272L224 142.51 271.15 272z"></path></svg><!-- <i class="fas fa-font"></i> --> Blog Title</h3><p>Give your blog a catchy cool title (or just use your name, I'm not really that bothered).</p> </td>
           <td></td>
-          <td><input required="" class="form-control" type="text" name="main_text" minlength="3" maxlength="20" value="Astra London"></td>
+          <td><input required="" class="form-control" type="text" name="main_text" minlength="3" maxlength="20" value="{{ $pref->main_text ?? "Pref not initialised" }}"></td>
         </tr>
   
         <tr><td><hr></td><td></td><td><hr></td></tr>
         <tr class="form-group">
           <td><h3 class="sub-header"><svg class="svg-inline--fa fa-quote-left fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="quote-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M464 256h-80v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8c-88.4 0-160 71.6-160 160v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zm-288 0H96v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8C71.6 32 0 103.6 0 192v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48z"></path></svg><!-- <i class="fas fa-quote-left"></i> --> Subtitle</h3><p>Sum up what your blog is about in a few words or a short sentence.</p> </td>
           <td></td>
-          <td><input required="" class="form-control" type="text" name="sub_text" minlength="3" maxlength="20" value="Portfolio Gallery"></td>
+          <td><input required="" class="form-control" type="text" name="sub_text" minlength="3" maxlength="20" value="{{ $pref->sub_text ?? "Pref not initialised" }}"></td>
         </tr>
   
         <tr><td><hr></td><td></td><td><hr></td></tr>
@@ -30,7 +30,7 @@
           <tr class="form-group">
             <td></td>
             <td></td>
-            <td><p class="sub-header">Current Image:</p><div class="editpost_img_preview" style="background-image: url('img/uploads/pref/background_picture.5e21d4324e79d9.93636855.jpeg');">
+            <td><p class="sub-header">Current Image:</p><div class="editpost_img_preview" style="background-image: url('{{ $pref->background_image_location ?? "Pref not initialised" }}');">
             </div></td>
           </tr>
           <tr><td><hr></td><td></td><td><hr></td></tr>
@@ -48,7 +48,7 @@
           <tr class="form-group">
             <td></td>
             <td></td>
-            <td><p class="sub-header">Current Image:</p><div class="editpost_img_preview" style="background-image: url('img/uploads/pref/profile_picture.5e21d3caa96024.91370977.jpeg');"></div></td>
+            <td><p class="sub-header">Current Image:</p><div class="editpost_img_preview" style="background-image: url('{{ $pref->profile_pic_location ?? "Pref not initialised" }}');"></div></td>
           </tr>
   
           <tr class="form-group">

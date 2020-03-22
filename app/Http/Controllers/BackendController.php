@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Purifier;
 use \App\Post;
 use \App\Category;
+use \App\Pref;
 
 class BackendController extends Controller
 {
@@ -27,16 +28,6 @@ class BackendController extends Controller
         return \App\Category::orderBy('created_at', 'DESC')->where("deleted_at", null)->get();
     }
     
-
-
-
-    public function index() {
-        return view('backend.index');
-    }
-
-    public function homepage() {
-        return view('backend.homepage');
-    }
 
     public function posts() {
 
@@ -256,8 +247,11 @@ class BackendController extends Controller
 
 
 
+
     public function about() {
+        self::prefInit();
         return view('backend.about');
+
     }
 
     public function delete_confirm_post($id) {
@@ -281,6 +275,58 @@ class BackendController extends Controller
     $category->delete();
     return redirect('/backend/albums');
    }
+
+
+
+
+   // homepage / general stuff
+
+   public function prefInit() {
+    $result = Pref::first();
+    if (!$result) 
+    {
+        Pref::create([
+            'main_text'                         => 'Blog Title',
+            'sub_text'                          => 'Blog Subtitle',
+            'background_image_location'         => '/storage/uploads/def_bk.jpeg',
+            'profile_pic_location'              => '/storage/uploads/def_pp.jpeg',
+            'landing_page_title'                => 'Landing Page Title',
+            'landing_page_text'                 => 'Landing Page Text',
+            'about_section'                     => 'About section',
+            'number_of_recent_posts_to_display' => 5,
+            'Featured_Image_1_Gal_ID'           => 0,
+            'Featured_Image_2_Gal_ID'           => 0,
+            'Featured_Image_3_Gal_ID'           => 0,
+            'facebook_link'                     => 'https://facebook.com',
+            'email_address'                     => 'test@test.com',
+            'instagram_link'                    => 'https://facebook.com',
+            'bool_is_facebook_enabled'          => false,
+            'bool_is_email_enabled'             => false,
+            'bool_is_instagram_enabled'         => false,
+            'bool_is_aboutme_enabled'           => true,
+            'bool_is_landingsubtext_enabled'    => true
+        ]);
+        $result = Pref::first();
+     }
+
+     return $result;
+   }
+
+   
+   // general settings
+   public function index() {
+
+        $pref = self::prefInit();
+
+        return view('backend.index', compact('pref'));
+    }
+
+    // homepage settings
+    public function homepage() {
+        $pref = self::prefInit();
+
+        return view('backend.homepage', compact('pref'));
+    }
 
 }
 
