@@ -176,13 +176,12 @@ class BackendController extends Controller
 
        }
 
-
        return redirect("/backend/posts");
    }
 
 
 
-        /**
+    /**
      * Store album
      * 
      */
@@ -211,6 +210,46 @@ class BackendController extends Controller
 
         return redirect("/backend/albums");
     }
+
+
+    /*
+    * Update album
+    * 
+    */
+   public function updateAlbum($id){
+    // get user and authorize
+    $category = Category::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+
+   $data = request()->validate([
+       'title' => 'required',
+       'body' => 'required',
+       'image' => 'image',
+   ]);
+
+   $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+
+   if (request('image')) {
+       $imgPath = request('image')->store('uploads', 'public');
+
+       // adds the storage dir to the front of the path
+       $imgPathWithStorage = '/storage/' . $imgPath;
+
+       $category->update([
+           'title' => $data['title'],
+           'body' => $purified_body,
+           'image' => $imgPathWithStorage,
+       ]);
+   }
+   else{
+    $category->update([
+        'title' => $data['title'],
+        'body' => $purified_body,
+    ]);
+   }
+   
+   return redirect("/backend/albums");
+}
+
 
 
 
