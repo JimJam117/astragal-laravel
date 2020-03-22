@@ -136,6 +136,52 @@ class BackendController extends Controller
         return redirect("/backend/posts");
     }
 
+
+    /*
+    * Update post
+    * 
+    */
+   public function updatePost($id){
+        // get user and authorize
+        $post = \App\Post::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+
+       $data = request()->validate([
+           'title' => 'required',
+           'body' => 'required',
+           'category_id' => 'nullable',
+           'image' => 'image',
+       ]);
+
+       $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+
+       if (request('image')) {
+           $imgPath = request('image')->store('uploads', 'public');
+
+           // adds the storage dir to the front of the path
+           $imgPathWithStorage = '/storage/' . $imgPath;
+
+           $post->update([
+               'title' => $data['title'],
+               'body' => $purified_body,
+               'category_id' => $data['category_id'],
+               'image' => $imgPathWithStorage,
+           ]);
+       }
+       else{
+        $post->update([
+            'title' => $data['title'],
+            'body' => $purified_body,
+            'category_id' => $data['category_id'],
+        ]);
+
+       }
+
+
+       return redirect("/backend/posts");
+   }
+
+
+
         /**
      * Store album
      * 

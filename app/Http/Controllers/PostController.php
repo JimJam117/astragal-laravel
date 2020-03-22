@@ -196,6 +196,21 @@ class PostController extends Controller
         return view('post.edit', compact('post', 'categories'));
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function update($post){
         // get user and authorize
         $post = \App\Post::where('slug', $post)->whereNull('deleted_at')->firstOrFail();
@@ -203,7 +218,6 @@ class PostController extends Controller
        $data = request()->validate([
         'title' => 'required',
         'body' => 'required',
-        'slug' => 'required',
         'created_at_manual' => 'nullable|date',
         'category_id' => 'nullable',
         'image' => 'nullable|image',
@@ -212,23 +226,8 @@ class PostController extends Controller
 
        $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
 
-       if (request('image') && request('created_at_manual')) {
-        $imgPath = request('image')->store('uploads', 'public');
-
-        // adds the storage dir to the front of the path
-        $imgPathWithStorage = '/storage/' . $imgPath;
-        
-        $post->update([
-            'title' => $data['title'],
-            'body' => $purified_body,
-            'slug' => $data['slug'],
-            'category_id' => $data['category_id'],
-            'created_at' => $data['created_at_manual'],
-            
-            'image' => $imgPathWithStorage,
-            ]);
-        }
-       else if (request('image')) {
+    
+        if (request('image')) {
            $imgPath = request('image')->store('uploads', 'public');
 
            // adds the storage dir to the front of the path
@@ -242,36 +241,30 @@ class PostController extends Controller
 
                'image' => $imgPathWithStorage,
            ]);
-       }
-       else if (request('created_at_manual')) {
-
-
-        $post->update([
-            'title' => $data['title'],
-            'body' => $purified_body,
-            'slug' => $data['slug'],
-            'category_id' => $data['category_id'],
-            'created_at' => $data['created_at_manual'],
-        ]);
-    }
-       
+       }       
        else{
-       // create post assoc with auth'd user
-       // uses validated $data var items and also the image path
-       $post->update([
-        'title' => $data['title'],
-        'body' => $purified_body,
-        'slug' => $data['slug'],
-        'category_id' => $data['category_id'],
-
-       ]);
-
+            return "err";
        }
        
        
 
        return redirect("/post/$post->slug");
    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    public function delete_confirm($post) {
         $post = \App\Post::where('slug', $post)->whereNull('deleted_at')->firstOrFail();

@@ -33,7 +33,7 @@ Route::post('/backend/post', 'BackendController@storePost')->middleware('auth');
 
 // edit
 Route::get('/backend/post/{id}/edit', 'BackendController@editPost')->middleware('auth');
-Route::put('/backend/post', 'BackendController@updatePost')->middleware('auth');
+Route::put('/backend/post/{id}', 'BackendController@updatePost')->middleware('auth');
 
 // delete
 Route::get('/backend/post/{id}/delete', 'BackendController@delete_confirm_post')->middleware('auth');
@@ -52,7 +52,7 @@ Route::post('/backend/album', 'BackendController@storeAlbum')->middleware('auth'
 
 // edit
 Route::get('/backend/album/{id}/edit', 'BackendController@editAlbum')->middleware('auth');
-Route::put('/backend/album', 'BackendController@updateAlbum')->middleware('auth');
+Route::put('/backend/album/{id}', 'BackendController@updateAlbum')->middleware('auth');
 
 // delete
 Route::get('/backend/album/{id}/delete', 'BackendController@delete_confirm_album')->middleware('auth');

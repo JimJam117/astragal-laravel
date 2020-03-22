@@ -57,12 +57,32 @@
             @enderror
         </div>
 
-    </div>
+    </div> 
 
     <div class="form-group row mb-0">
         <button class="btn btn-primary text-center align-items-center" type="submit" name="button">Add New Post</button>
     </div>
 </form>
 <hr>
+
+
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
+<script>
+  var editor_config = {
+    forced_root_block : false,
+    path_absolute : "/",
+    selector: "textarea",
+    plugins: [
+      "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+      "searchreplace wordcount visualblocks visualchars code fullscreen",
+      "insertdatetime media nonbreaking save table contextmenu directionality",
+      "emoticons template paste textcolor colorpicker textpattern"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
+    relative_urls: false,
+  };
+  tinymce.init(editor_config);
+</script>
 
 @endsection
