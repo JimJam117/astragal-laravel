@@ -369,6 +369,33 @@ class BackendController extends Controller
        return redirect("/backend");
     }
 
+
+
+    public function updateHomepage(){
+        // get user and authorize
+        $pref = Pref::first();
+    
+       $data = request()->validate([
+           'landing_page_title' => 'required',
+           'landing_page_text' => 'required',
+           'about_section' => 'required',
+       ]);
+    
+       $purified_landing_title = Purifier::clean($data['landing_page_title'], array('HTML.Allowed' => $this->purifierAllowedElements));
+       $purified_landing_text  = Purifier::clean($data['landing_page_text'], array('HTML.Allowed' => $this->purifierAllowedElements));
+       $purified_about_section = Purifier::clean($data['about_section'], array('HTML.Allowed' => $this->purifierAllowedElements));
+
+
+        $pref->update([
+            'landing_page_title' => $purified_landing_title,
+            'landing_page_text' => $purified_landing_text,
+            'about_section' => $purified_about_section,
+        ]);        
+    
+       
+       return redirect("/backend/homepage");
+    }
+
 }
 
 

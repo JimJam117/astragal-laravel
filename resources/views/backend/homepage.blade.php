@@ -31,7 +31,7 @@
                             your name, whatever you feel like.</p>
                     </td>
                     <td></td>
-                    <td><input class="form-control" type="text" name="landingpage_title" minlength="3" maxlength="35"
+                    <td><input class="form-control" type="text" name="landing_page_title" minlength="3" maxlength="35"
                             value="{{ $pref->landing_page_title ?? "Pref not initialised" }}"></td>
                 </tr>
 
@@ -53,7 +53,7 @@
                     </td>
                     <td></td>
                     <td><textarea class="form-control" type="text" maxlength="350"
-                            name="landingpage_text">{{ $pref->landing_page_text ?? "Pref not initialised" }}</textarea>
+                            name="landing_page_text">{{ $pref->landing_page_text ?? "Pref not initialised" }}</textarea>
                     </td>
                 </tr>
 
