@@ -62,19 +62,19 @@ const Home = () => {
 
                                 <h2 className="SectionTitle">Explore</h2>
                                 <div className="mainLinksSection">
-                                    <a href="list_albums.php" className="mainLinksSection_div">
+                                    <Link to="/albums" className="mainLinksSection_div">
                                         <h2>View Albums</h2>
                                         <p>Click here to explore all of my albums</p>
 
                                         <i className="fas fa-folder-open"></i>
-                                    </a>
+                                    </Link>
 
-                                    <a href="list_posts.php" className="mainLinksSection_div">
+                                    <Link to="posts" className="mainLinksSection_div">
                                         <h2>View All Posts</h2>
                                         <p>Click here to explore all of my posts</p>
 
                                         <i className="fas fa-images"></i>
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 {state.posts.length > 0
@@ -89,7 +89,7 @@ const Home = () => {
                                                                 return (
                                                                     <Link
                                                                         style={{
-                                                                        "backgroundImage:": " url('img/uploads/image.5e740cac5a93b5.27426162.png');"
+                                                                        backgroundImage: `url('${post.image}')`
                                                                     }}
                                                                         className="image_link"
                                                                         to={`/post/${post.id}`}>

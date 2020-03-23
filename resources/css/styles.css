@@ -7,7 +7,7 @@
   
 
   .slick-slide img {
-    height: calc(50vh - 100px);
+    height: calc(50vh);
     width: auto;
     margin: 0 auto; /* it centers any block level element */
     
@@ -425,7 +425,7 @@
     "image text";
     grid-template-columns: 20% 80%;
     grid-template-rows: auto;
-    height: 18vw;
+    height: 14vw;
     overflow: hidden;
     margin: 1em 0.4em;
     background: #ffffff;
@@ -610,14 +610,15 @@
   }
   .album_link_name{
     font-family: Nunito;
-    font-size: 2em;
+    font-size: 2rem;
   }
   .album_link_text{
     grid-area: text;
     padding: 1em;
-    font-size: 1em;
+    font-size: 1.25rem;
     overflow-wrap: normal;
     text-align: justify;
+    font-family: Roboto;
   }
   
   /*Album Single*/
