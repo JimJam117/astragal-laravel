@@ -169,7 +169,7 @@ class BackendController extends Controller
         ]);
        }
 
-       if ($data['image_extra']) {
+       if (request('image_extra')) {
             $imgPath = request('image_extra')->store('uploads', 'public');
 
             // adds the storage dir to the front of the path
@@ -181,7 +181,7 @@ class BackendController extends Controller
             ]);
         }
 
-        $post = \App\Post::where('id', $id)->whereNull('deleted_at')->firstOrFail();
+
         $images = Image::where('post_id', $id)->get();
         $categories = self::allCategories();
         $success_message = "$post->title updated successfully!";
@@ -267,7 +267,7 @@ class BackendController extends Controller
 
 
     public function about() {
-        dd(Image::all());
+        dd(Post::all());
         return view('backend.about');
 
     }

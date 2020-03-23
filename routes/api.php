@@ -17,5 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::resource('image', 'Api\ImageController');
 Route::resource('post', 'Api\PostController');
 Route::resource('category', 'Api\CategoryController');
+Route::get('/post-images/{id}', 'Api\ImageController@show_images_in_post');

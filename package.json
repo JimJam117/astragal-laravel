@@ -26,7 +26,10 @@
     },
     "dependencies": {
         "react-html-parser": "^2.0.2",
+        "react-responsive-carousel": "^3.1.51",
         "react-router": "^5.1.2",
-        "react-router-dom": "^5.1.2"
+        "react-router-dom": "^5.1.2",
+        "react-slick": "^0.25.2",
+        "slick-carousel": "^1.8.1"
     }
 }

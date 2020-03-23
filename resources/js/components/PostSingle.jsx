@@ -1,7 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import Header from './partials/Header'
 import Footer from './partials/Footer'
 import {Link} from 'react-router-dom'
+import Slider from "react-slick";
 
 import ReactHtmlParser from 'react-html-parser';
 
@@ -9,22 +13,27 @@ const PostSingle = (props) => {
 
 
     const [state, setState] = useState({});
+    const [extraImages, setExtraImages] = useState({});
     const [loading, setLoading] = useState(true);
 
     const fetchItem = async () => {
         await fetch('/api/post/' + props.match.params.id)
         .then((response) => {
-            console.log(response);
             return response.json();
           })
         .then((data) => {
             setState(data);
-            setLoading(false);
-            console.log(data)
+            fetch('/api/post-images/' + props.match.params.id)
+            .then((response) => {
+                return response.json();
+              })
+            .then((data) => {
+                setExtraImages(data.images);
+                setLoading(false);
+                }
+            );
             }
         );
-
-
     }
 
     useEffect(() => {
@@ -32,6 +41,17 @@ const PostSingle = (props) => {
     });
 
     console.log(state);
+
+    var settings = {
+        className: 'slick-centered',
+        arrows: true,
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+      };
+  
 
     return (
         <div>
@@ -46,17 +66,29 @@ const PostSingle = (props) => {
 
                     {/* <!--IMAGE--> */}
                     <div className="single_image_container">
-                    <img className="single_image" src={state.post.image} alt={state.post.title} />
+                    <Slider {...settings}>
+                    <div className="slide-obj"><img src={state.post.image} alt={state.post.title} /></div>
+                    {/* <div>1</div> */}
+                    {
+                        extraImages.map(extraImage => {
+                            return <div className="slide-obj"><img key={extraImage.id} src={extraImage.image}/></div>
+                            // return <div>1</div>
+                        })
+                    }
+                    </Slider>
                     </div>
 
                     {/* <!--LINK BUTTONS--> */}
                     <div className="single_links">
-                    <a className="single_download" href={`/img/uploads/${state.post.image}`} download><i className="fas fa-download"></i> Download</a>
-                    <a className="single_viewfull" href={`/img/uploads/${state.post.image}`} target="_blank"><i className="far fa-image"></i> View Full Size</a>
+                    <a className="single_download" href={`${state.post.image}`} download><i className="fas fa-download"></i> Download</a>
+                    <a className="single_viewfull" href={`${state.post.image}`} target="_blank"><i className="far fa-image"></i> View Full Size</a>
 
                     {/* <!--ABLUM BUTTON--> */}
-                    <Link className="single_viewalbum" to={`/album/${state.post.category_id}`}><i className="far fa-images"></i> View Album</ Link>
-                    
+                    {
+                        state.post.category_id == 0 ? null :
+                        <Link className="single_viewalbum" to={`/album/${state.post.category_id}`}><i className="far fa-images"></i> View Album</ Link>
+                    }
+                     
                     {/* <!--BACK BUTTON--> */}
                     <Link className="single_goback" to="/posts"><i className="fas fa-arrow-left"></i> Go Back</ Link>
 

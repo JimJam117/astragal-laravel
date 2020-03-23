@@ -5,7 +5,17 @@
     padding: 0;
   }
   
-  
+
+  .slick-slide img {
+    height: calc(50vh - 100px);
+    width: auto;
+    margin: 0 auto; /* it centers any block level element */
+    
+    max-width: 100% !important;
+    margin: auto;
+    object-fit: contain;
+}
+
   .toBackend{
     position: fixed;
     z-index: 99;

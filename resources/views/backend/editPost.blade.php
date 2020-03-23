@@ -28,10 +28,14 @@
         <label for="category_id">Album:</label>
         <br>
         <select id="category_id" type="category_id" class="form-control @error('category_id') is-invalid @enderror" name="category_id"
-        value="{{ old('category_id') ?? $post->category_id ?? "" }}" >
+         >
             <option value="0">None</option>
             @foreach ($categories as $category)
-            <option value="{{$category->id}}">{{$category->title}}</option>
+                @if ($category->id == $post->category_id)
+                    <option selected="selected" value="{{$category->id}}">{{$category->title}}</option>
+                @else
+                    <option value="{{$category->id}}">{{$category->title}}</option>
+                @endif
             @endforeach
           </select>
 
