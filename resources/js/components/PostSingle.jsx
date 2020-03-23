@@ -12,36 +12,103 @@ import ReactHtmlParser from 'react-html-parser';
 
 const PostSingle = (props) => {
 
+    // abort controller
+    var controller = new AbortController();
+    var signal = controller.signal;
+    
 
     const [state, setState] = useState({});
     const [extraImages, setExtraImages] = useState({});
     const [loading, setLoading] = useState(true);
+    const [isFetching,setIsFetching] = useState(false);
 
-    const fetchItem = async () => {
-        await fetch('/api/post/' + props.match.params.id)
-        .then((response) => {
-            return response.json();
-          })
-        .then((data) => {
-            setState(data);
-            fetch('/api/post-images/' + props.match.params.id)
+ 
+    const fetchItems = async (apiUrl = `/api/post/` + props.match.params.id) =>  {
+        setIsFetching(true);
+        await fetch(apiUrl, {signal})
             .then((response) => {
-                return response.json();
-              })
-            .then((data) => {
-                setExtraImages(data.images);
-                setLoading(false);
+
+                //throw errors if issues
+                if (response.status === 500) {
+                    throw new Error("500");
                 }
-            );
+                else if(response.status === 404) {
+                    throw new Error("404");
+                }
+                else if(response.status === 419) {
+                    throw new Error("419");
+                }
+                else if(response.status === 429) {
+                    throw new Error("429");
+                }
+
+                console.log(response);
+                return response.json();
+
+        }).then(data => {
+            setState(data);
+
+            return fetch('/api/post-images/' + props.match.params.id);
+        }).then((response) => {
+
+            //throw errors if issues
+            if (response.status === 500) {
+                throw new Error("500");
             }
-        );
+            else if(response.status === 404) {
+                throw new Error("404");
+            }
+            else if(response.status === 419) {
+                throw new Error("419");
+            }
+            else if(response.status === 429) {
+                throw new Error("429");
+            }
+
+            console.log(response);
+            return response.json();
+        }).then(imagesData => {
+            setExtraImages(imagesData.images);
+            setLoading(false);
+            setIsFetching(false);
+
+        })
+
+
+        //err catch
+        .catch((e) => {
+            if (e.name !== "AbortError") {
+                if (e.message === "404" || e.name === "TypeError") {
+                    window.location.href = "/not-found";
+                }
+                else if (e.message === "500") {
+                    window.location.href = "/server-error";
+                }
+                else if (e.message === "419") {
+                    window.location.href = "/page-expired";
+                }
+                else if (e.message === "429") {
+                    window.location.href = "/too-many-requests";
+                }
+            } 
+        });
     }
 
-    useEffect(() => {
-        loading ? fetchItem() : null;
-    });
 
-    console.log(state);
+    useEffect(() => {
+        if(loading && !isFetching) {
+            setTimeout(() => {
+                setIsFetching(true);
+                fetchItems();
+            }, 2000);
+        };
+        return () => {
+            if(isFetching){
+                controller.abort();
+                setIsFetching(false);
+            }
+        };
+    }, [setIsFetching]);
 
     var settings = {
         className: 'slick-centered',

@@ -1,10 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import Header from './partials/Header'
 import Footer from './partials/Footer'
 import Loading from './partials/Loading'
 import {Link} from 'react-router-dom'
 
 const Posts = () => {
+
+    // abort controller
+    var controller = new AbortController();
+    var signal = controller.signal;
 
     const [state, setState] = useState({});
     const [loading, setLoading] = useState(true);
@@ -17,27 +21,78 @@ const Posts = () => {
     let indexOfLastPost = currentPage * postsPerPage;
     let indexOfFirstPost = indexOfLastPost - postsPerPage;
 
-    const fetchItems = async () => {
-        await fetch('/api/post')
-        .then((response) => {
-            
-            return response.json();
-          })
-        .then((data) => {
+    const [isFetching,setIsFetching] = useState(false);
+    const mountedRef = useRef(true);
  
-            // add the current range of posts to the state
-            let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
-            indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);
-            setState({...data, currentPosts});
-            console.log(data);
-            setLoading(false);
+    const fetchItems = async (apiUrl = `/api/post`) =>  {
+            
+        await fetch(apiUrl, {signal})
+            .then((response) => {
+
+                //throw errors if issues
+                if (response.status === 500) {
+                    throw new Error("500");
+                }
+                else if(response.status === 404) {
+                    throw new Error("404");
+                }
+                else if(response.status === 419) {
+                    throw new Error("419");
+                }
+                else if(response.status === 429) {
+                    throw new Error("429");
+                }
+
+                console.log(["post from posts", response]);
+                return response.json();
+
+            }).then(data => {
+            if(mountedRef.current){
+                // add the current range of posts to the state
+                let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
+                indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);
+                setState({...data, currentPosts});
+                setLoading(false);
+                setIsFetching(false);
             }
-        );
+        })
+
+        //err catch
+        .catch((e) => {
+            if (e.name !== "AbortError") {
+                if (e.message === "404" || e.name === "TypeError") {
+                    window.location.href = "/not-found";
+                }
+                else if (e.message === "500") {
+                    window.location.href = "/server-error";
+                }
+                else if (e.message === "419") {
+                    window.location.href = "/page-expired";
+                }
+                else if (e.message === "429") {
+                    window.location.href = "/too-many-requests";
+                }
+            }
+        });
     }
 
     useEffect(() => {
-        loading ? fetchItems() : null;
-    });
+        if(loading && !isFetching) {
+            setTimeout(() => {
+                setIsFetching(true);
+                fetchItems();
+            }, 2000);
+        };
+        return () => {
+            mountedRef.current = false;
+            if(isFetching){
+                controller.abort();
+                setIsFetching(false);
+            }
+        };
+    }, [setIsFetching]);
+
+
 
     // paginator page functions
     const nextPage = () => {

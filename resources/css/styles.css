@@ -28,6 +28,9 @@
     color:white !important; 
     font-family: sans;
 }
+.gal_area{
+  font-family: Roboto;
+}
 
   /* loading */
   .loading-page{
@@ -587,6 +590,7 @@
     grid-template-columns: 25% 25% 25% 25%;
     grid-auto-rows: 15vw;
     width: 100%;
+    font-family: Roboto;
   }
   .alb_area_container{
     padding: 2em;
@@ -652,6 +656,7 @@
     padding: 1em;
     text-align: center;
     font-size: 2em;
+    font-family: Nunito;
   }
   .italic{
     font-style: italic;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
 
@@ -23,12 +23,12 @@ const Home = () => {
     const [pref,setPref] = useState({});
     const [loading,setLoading] = useState(true);
     const [isFetching,setIsFetching] = useState(false);
-
+    const mountedRef = useRef(true);
  
     const fetchItems = async (apiUrl = `/api/post`) =>  {
         setIsFetching(true);
         await fetch(apiUrl, {signal})
-            .then(async (response) => {
+            .then((response) => {
 
                 //throw errors if issues
                 if (response.status === 500) {
@@ -40,15 +40,20 @@ const Home = () => {
                 else if(response.status === 419) {
                     throw new Error("419");
                 }
+                else if(response.status === 429) {
+                    throw new Error("429");
+                }
 
-                console.log(response);
-                return await response.json();
+                console.log(["post from home", response]);
+                return response.json();
 
         }).then(data => {
-            setState(data);
+            if(mountedRef.current){
+                setState(data);
+            }
 
-            return fetch('/api/pref');
-        }).then(async (response) => {
+            return fetch('/api/pref', {signal});
+        }).then((response) => {
 
             //throw errors if issues
             if (response.status === 500) {
@@ -60,14 +65,18 @@ const Home = () => {
             else if(response.status === 419) {
                 throw new Error("419");
             }
+            else if(response.status === 429) {
+                throw new Error("429");
+            }
 
-            console.log(response);
-            return await response.json();
+            console.log(["pref from home", response]);
+            return response.json();
         }).then(prefData => {
+            if(mountedRef.current){
             setPref(prefData);
             setLoading(false);
             setIsFetching(false);
-
+            }
         })
 
 
@@ -83,6 +92,9 @@ const Home = () => {
                 else if (e.message === "419") {
                     window.location.href = "/page-expired";
                 }
+                else if (e.message === "429") {
+                    window.location.href = "/too-many-requests";
+                }
             } 
         });
     }
@@ -90,8 +102,11 @@ const Home = () => {
     useEffect(() => {
         if(loading && !isFetching) {fetchItems()};
         return () => {
-            controller.abort();
-            setIsFetching(false);
+            mountedRef.current = false
+            if(isFetching){
+                controller.abort();
+                setIsFetching(false);
+            }
         };
     }, [setIsFetching]);
 

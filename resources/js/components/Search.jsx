@@ -20,6 +20,18 @@ const Search = (props) => {
     const fetchItems = async () => {
         await fetch('/api/post')
         .then((response) => {
+            //throw errors if issues
+            if (response.status === 500) {
+                throw new Error("500");
+            }
+            else if(response.status === 419) {
+                throw new Error("419");
+            }
+            else if(response.status === 429) {
+                throw new Error("429");
+            }
+
+
             return response.json();
           })
         .then((data) => {
@@ -43,6 +55,22 @@ const Search = (props) => {
                 });
                 return containsString;
 
+            })        //err catch
+            .catch((e) => {
+                if (e.name !== "AbortError") {
+                    if (e.message === "404") {
+                        window.location.href = "/not-found";
+                    }
+                    else if (e.message === "500") {
+                        window.location.href = "/server-error";
+                    }
+                    else if (e.message === "419") {
+                        window.location.href = "/page-expired";
+                    }
+                    else if (e.message === "429") {
+                        window.location.href = "/too-many-requests";
+                    }
+                }
             });
 
             // add the current range of posts to the state
@@ -85,7 +113,7 @@ const Search = (props) => {
                 <div>
                     <div className="mainGallery">
                         <div className="gal_area_container">
-                            <div class="ResultsBanner"> Search results for: {props.match.params.query} </div> 
+                            <div className="ResultsBanner"> Search results for: {props.match.params.query} </div> 
                             {state.currentPosts.length == 0 ? <div className="no-results"><div className="sad">😢</div> No posts found</div> :
                                 <div className="gal_area">
                                 { state.currentPosts.map((post) => { 
@@ -105,7 +133,7 @@ const Search = (props) => {
                     </div>
 
                     {/* Paginator Buttons */}
-                    <div class="frontend_pagination_container">
+                    <div className="frontend_pagination_container">
                         {currentPage > 1 && <button onClick={() => prevPage()}>Prev page</button>}
                         {!isLastPage && <button onClick={() => nextPage()}>Next page</button>}
                     </div>
