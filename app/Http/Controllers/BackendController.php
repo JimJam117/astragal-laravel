@@ -12,7 +12,15 @@ use \App\Image;
 class BackendController extends Controller
 {
     // purifier config 
-    public $purifierAllowedElements = 'div,h1,h2,h3,h4,h5,h6,code,b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]';
+    public $purifierConfig = [
+        'HTML.Trusted'=>'true',
+        'HTML.Allowed'=>'div,h1,h2,h3,h4,h5,h6,code,b,strong,i,em,u,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]',
+        "HTML.SafeIframe"      => 'true',
+        "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
+    ];
+
+
+
 
 
     // pagination and get posts/categories functions
@@ -108,7 +116,7 @@ class BackendController extends Controller
             'image' => 'image|required',
         ]);
 
-        $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+        $purified_body = Purifier::clean($data['body'], 'youtube');
 
         if ($data['image']) {
             $imgPath = request('image')->store('uploads', 'public');
@@ -146,7 +154,7 @@ class BackendController extends Controller
            'image_extra' => 'image'
        ]);
 
-       $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+       $purified_body = Purifier::clean($data['body'], 'youtube');
 
        if (request('image')) {
            $imgPath = request('image')->store('uploads', 'public');
@@ -201,7 +209,7 @@ class BackendController extends Controller
             'image' => 'image|required',
         ]);
 
-        $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+        $purified_body = Purifier::clean($data['body'], 'youtube');
 
         if ($data['image']) {
             $imgPath = request('image')->store('uploads', 'public');
@@ -235,7 +243,7 @@ class BackendController extends Controller
        'image' => 'image',
    ]);
 
-   $purified_body = Purifier::clean($data['body'], array('HTML.Allowed' => $this->purifierAllowedElements));
+   $purified_body = Purifier::clean($data['body'], 'youtube');
 
    if (request('image')) {
        $imgPath = request('image')->store('uploads', 'public');
@@ -380,8 +388,8 @@ class BackendController extends Controller
            'profile_pic_location' => 'image',
        ]);
     
-       $purified_main = Purifier::clean($data['main_text'], array('HTML.Allowed' => $this->purifierAllowedElements));
-       $purified_sub = Purifier::clean($data['sub_text'], array('HTML.Allowed' => $this->purifierAllowedElements));
+       $purified_main = Purifier::clean($data['main_text'], 'youtube');
+       $purified_sub = Purifier::clean($data['sub_text'], 'youtube');
 
        // if the request contains a background image
        if (request('background_image_location')) {
@@ -422,9 +430,9 @@ class BackendController extends Controller
            'about_section' => 'required',
        ]);
     
-       $purified_landing_title = Purifier::clean($data['landing_page_title'], array('HTML.Allowed' => $this->purifierAllowedElements));
-       $purified_landing_text  = Purifier::clean($data['landing_page_text'], array('HTML.Allowed' => $this->purifierAllowedElements));
-       $purified_about_section = Purifier::clean($data['about_section'], array('HTML.Allowed' => $this->purifierAllowedElements));
+       $purified_landing_title = Purifier::clean($data['landing_page_title'], 'youtube');
+       $purified_landing_text  = Purifier::clean($data['landing_page_text'], 'youtube');
+       $purified_about_section = Purifier::clean($data['about_section'], 'youtube');
 
 
         $pref->update([

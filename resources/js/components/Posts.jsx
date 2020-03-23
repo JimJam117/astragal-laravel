@@ -20,6 +20,7 @@ const Posts = () => {
     const fetchItems = async () => {
         await fetch('/api/post')
         .then((response) => {
+            
             return response.json();
           })
         .then((data) => {
@@ -28,7 +29,7 @@ const Posts = () => {
             let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
             indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);
             setState({...data, currentPosts});
-
+            console.log(data);
             setLoading(false);
             }
         );
