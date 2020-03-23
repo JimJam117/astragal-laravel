@@ -18,7 +18,10 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
   </head>
-  <body>
+    @php
+        $bk = \App\Pref::first()->background_image_location;
+    @endphp
+    <body style="background-image: url({{ $bk }})">
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
     @auth

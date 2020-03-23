@@ -2,8 +2,9 @@ import React from 'react'
 import FadeLoader from "react-spinners/FadeLoader";
 
 export default function Loading(props) {
-    return (
-        <div className ="loading-page">
+    
+  return (
+        <div className={props.opacity == 1 ? "loading-page opacity" : "loading-page" }>
         <FadeLoader
           height={15}
           width={5}

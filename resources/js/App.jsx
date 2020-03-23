@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../css/styles.css';
 import ReactDOM from 'react-dom';
 
@@ -19,7 +19,6 @@ import Search from './components/Search';
 
 function App() {
 
- 
 
   return (
     <div className="App">
