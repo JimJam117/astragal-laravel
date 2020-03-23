@@ -59,7 +59,7 @@ const PostSingle = (props) => {
             <Header></Header>
         <div id="mainContent" className="main_content">
             
-        {loading ? <Loading /> :
+        {loading ? <Loading white={true} /> :
         <article className="single">
    
                 {props.match.params.body}
@@ -114,7 +114,7 @@ const PostSingle = (props) => {
     </article>
     }
 
-    <Footer></Footer>
+    <Footer white={true}></Footer>
     </div>    </div>
     );
 }

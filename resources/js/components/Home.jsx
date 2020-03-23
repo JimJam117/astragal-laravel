@@ -48,7 +48,7 @@ const Home = () => {
 
             <div id="mainContent" className="main_content">
                 {loading
-                    ? <Loading opacity={1}/>
+                    ? <Loading/>
                     : <div>
                         <div className="landingPage">
                             <h1 className="landingPage_title">{pref.landing_page_title}</h1>
@@ -137,7 +137,7 @@ const Home = () => {
 
                     </div>
 }
-                <Footer opacity={true}></Footer>
+                <Footer></Footer>
             </div>
         </div>
     );

@@ -76,7 +76,7 @@ const AlbumSingle = (props) => {
                     <div class="album_single_container">
                         <div class="album_single_area">
                             <h1>{state.category.title}</h1>
-                            <img src="img/uploads/album_covers/album.5e4979d16e7074.26287789.jpg" />
+                            <img src={state.category.image} />
                             <div class="album_single_desc">{ReactHtmlParser(state.category.body)}</div>
                         </div>
                         <div class="album_posts_section_header">
@@ -90,7 +90,7 @@ const AlbumSingle = (props) => {
                                     return null;
                                     }
                                     return (
-                                        <Link style={{ "backgroundImage" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}} class="image_link" to={`/post/${post.id}`}>
+                                        <Link style={{ backgroundImage : `url(${post.image})`}} class="image_link" to={`/post/${post.id}`}>
                                             <div class="filter">
                                                 <h2 class="name name_album_single"> {post.title}</h2>
                                             </div>
@@ -107,6 +107,7 @@ const AlbumSingle = (props) => {
                     </div>
                 </div>
             }
+            <Footer></Footer>
         </div>
     </div>
     );
