@@ -85,19 +85,22 @@ const Search = (props) => {
                 <div>
                     <div className="mainGallery">
                         <div className="gal_area_container">
-                            Search: {props.match.params.query}
-                            <div className="gal_area">
-                            { state.currentPosts.map((post) => { 
-                                    return (
-                                        <Link key={post.id} style={{ "backgroundImage" : `url('${post.image}')`}} className="image_link" to={`post/${post.id}`}>
-                                            <div className="filter">
-                                                <h2 className="name">{post.title}</h2>  
-                                            </div>
-                                        </Link>
-                                    )
-                                })
+                            <div class="ResultsBanner"> Search results for: {props.match.params.query} </div> 
+                            {state.currentPosts.length == 0 ? <div className="no-results"><div className="sad">😢</div> No posts found</div> :
+                                <div className="gal_area">
+                                { state.currentPosts.map((post) => { 
+                                        return (
+                                            <Link key={post.id} style={{ "backgroundImage" : `url('${post.image}')`}} className="image_link" to={`/post/${post.id}`}>
+                                                <div className="filter">
+                                                    <h2 className="name">{post.title}</h2>  
+                                                </div>
+                                            </Link>
+                                        )
+                                    })
+                                }
+                                
+                                </div>
                             }
-                            </div>
                         </div>
                     </div>
 

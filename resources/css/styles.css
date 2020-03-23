@@ -519,6 +519,8 @@
     font-family: Roboto;
     width: 50%;
     padding: 5vw;
+    min-height: 20vh;
+
   }
   .single_right h2{
   
@@ -823,11 +825,25 @@
   .ResultsBanner{
     padding: 1em;
     margin-bottom: 1em;
+    font-size: 1.2rem;
     background-color: lightslategrey;
     color: white;
     text-align: center;
   }
   
+  .no-results{
+    display: flex;
+
+align-items: center;
+font-size: 2rem;
+height: 100%;
+flex-direction: column;
+  }
+
+  .sad{
+    font-size: 5rem;
+    padding: 1em;
+  }
   
   
   /*Footer*/
