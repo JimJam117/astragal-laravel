@@ -10,6 +10,11 @@ import Home from './components/Home';
 import Posts from './components/Posts';
 import Albums from './components/Albums';
 
+import not_found from './components/errors/not_found';
+import server_error from './components/errors/server_error';
+import too_many_requests from './components/errors/too_many_requests';
+import page_expired from './components/errors/page_expired';
+
 import PostSingle from './components/PostSingle';
 import AlbumSingle from './components/AlbumSingle';
 
@@ -33,6 +38,12 @@ function App() {
           <Route path="/album/:id" component={AlbumSingle}/>
 
           <Route path="/search/:query" component={Search}/>
+
+          <Route path="/not-found" component={not_found}/>
+          <Route path="/server-error" component={server_error}/>
+          <Route path="/page-expired" component={page_expired}/>
+          <Route path="/too-many-requests" component={too_many_requests}/>
+
           <Redirect path="/search" to="/"/>
 
           {/* <Route path="/search/:query" component={SearchResults}/> */}
@@ -43,6 +54,7 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
 

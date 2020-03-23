@@ -55,22 +55,6 @@ const Search = (props) => {
                 });
                 return containsString;
 
-            })        //err catch
-            .catch((e) => {
-                if (e.name !== "AbortError") {
-                    if (e.message === "404") {
-                        window.location.href = "/not-found";
-                    }
-                    else if (e.message === "500") {
-                        window.location.href = "/server-error";
-                    }
-                    else if (e.message === "419") {
-                        window.location.href = "/page-expired";
-                    }
-                    else if (e.message === "429") {
-                        window.location.href = "/too-many-requests";
-                    }
-                }
             });
 
             // add the current range of posts to the state
@@ -80,7 +64,22 @@ const Search = (props) => {
 
             setLoading(false);
             }
-        );
+        ).catch((e) => {
+            if (e.name !== "AbortError") {
+                if (e.message === "404") {
+                    window.location.href = "/not-found";
+                }
+                else if (e.message === "500") {
+                    window.location.href = "/server-error";
+                }
+                else if (e.message === "419") {
+                    window.location.href = "/page-expired";
+                }
+                else if (e.message === "429") {
+                    window.location.href = "/too-many-requests";
+                }
+            }
+        });
     }
 
     useEffect(() => {

@@ -32,6 +32,23 @@
   font-family: Roboto;
 }
 
+.error-page{
+  background-color:
+#e1e1e1;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+font-family: Roboto;
+flex-direction: column;
+}
+.error-page h1{
+  padding: 2em;
+}
+.error-page h2{
+  padding: 1em;
+}
+
   /* loading */
   .loading-page{
     width: 100%;

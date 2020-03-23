@@ -90,8 +90,8 @@ const AlbumSingle = (props) => {
         .catch((e) => {
             if (e.name !== "AbortError") {
                 if (e.message === "404" || e.name === "TypeError") {
-                    // window.location.href = "/not-found";
-                    console.log(e);
+                    window.location.href = "/not-found";
+                    //console.log(e);
                 }
                 else if (e.message === "500") {
                     window.location.href = "/server-error";
