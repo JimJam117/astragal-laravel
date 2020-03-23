@@ -8,6 +8,10 @@ import Loading from './partials/Loading';
 
 const Home = () => {
 
+    // abort controller
+    var controller = new AbortController();
+    var signal = controller.signal;
+
     function emailDisplay() {
         var email_element = document.getElementById("tooltiptext_email");
         email_element
@@ -15,32 +19,81 @@ const Home = () => {
             .toggle("tooltiptext_reveal");
     }
 
-    const [state,
-        setState] = useState({});
-    const [pref,
-        setPref] = useState({});
-    const [loading,
-        setLoading] = useState(true);
+    const [state,setState] = useState({});
+    const [pref,setPref] = useState({});
+    const [loading,setLoading] = useState(true);
+    const [isFetching,setIsFetching] = useState(false);
 
-    const fetchItems = async() => {
-        await fetch('/api/post').then((response) => {
-            return response.json();
-        }).then((data) => {
+ 
+    const fetchItems = async (apiUrl = `/api/post`) =>  {
+        setIsFetching(true);
+        await fetch(apiUrl, {signal})
+            .then(async (response) => {
+
+                //throw errors if issues
+                if (response.status === 500) {
+                    throw new Error("500");
+                }
+                else if(response.status === 404) {
+                    throw new Error("404");
+                }
+                else if(response.status === 419) {
+                    throw new Error("419");
+                }
+
+                console.log(response);
+                return await response.json();
+
+        }).then(data => {
             setState(data);
-            fetch('/api/pref').then((response) => {
-                return response.json();
-            }).then((data) => {
-                setPref(data);
-                setLoading(false);
-            });
+
+            return fetch('/api/pref');
+        }).then(async (response) => {
+
+            //throw errors if issues
+            if (response.status === 500) {
+                throw new Error("500");
+            }
+            else if(response.status === 404) {
+                throw new Error("404");
+            }
+            else if(response.status === 419) {
+                throw new Error("419");
+            }
+
+            console.log(response);
+            return await response.json();
+        }).then(prefData => {
+            setPref(prefData);
+            setLoading(false);
+            setIsFetching(false);
+
+        })
+
+
+        //err catch
+        .catch((e) => {
+            if (e.name !== "AbortError") {
+                if (e.message === "404" || e.name === "TypeError") {
+                    window.location.href = "/not-found";
+                }
+                else if (e.message === "500") {
+                    window.location.href = "/server-error";
+                }
+                else if (e.message === "419") {
+                    window.location.href = "/page-expired";
+                }
+            } 
         });
     }
 
     useEffect(() => {
-        loading
-            ? fetchItems()
-            : null;
-    });
+        if(loading && !isFetching) {fetchItems()};
+        return () => {
+            controller.abort();
+            setIsFetching(false);
+        };
+    }, [setIsFetching]);
 
     return (
         <div>
@@ -53,7 +106,7 @@ const Home = () => {
                         <div className="landingPage">
                             <h1 className="landingPage_title">{pref.landing_page_title}</h1>
                             <div className="landingpage_text">
-                                <p>{pref.landing_page_text}</p>
+                                <p>{pref.landing_page_text}</p> 
                             </div>
                         </div>
 
@@ -82,17 +135,15 @@ const Home = () => {
                                             <h2 className="SectionTitle">Recent Uploads</h2>
                                             <div className="featuredImages recentPosts">
                                                 <div className="miniGallery">
-                                                    {state
-                                                        .posts
-                                                        .map((post, i = 0) => {
+                                                    {state.posts.map((post, i = 0) => {
                                                             if (i < 6) {
                                                                 return (
-                                                                    <Link
-                                                                        style={{
-                                                                        backgroundImage: `url('${post.image}')`
-                                                                    }}
+                                                                    <Link 
+                                                                        key={post.id}
+                                                                        style={{backgroundImage: `url('${post.image}')`}} 
                                                                         className="image_link"
                                                                         to={`/post/${post.id}`}>
+
                                                                         <div className="filter">
                                                                             <h2 className="name">
                                                                                 {post.title}
