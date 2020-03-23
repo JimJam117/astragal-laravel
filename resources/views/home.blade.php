@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Astra London - Portfolio">
     <title>Astra London</title>
-    <link rel="icon" href="/img/jimjam.ico">
+    <link rel="icon" href="/img/pref/profilePic.jpeg">
 
 
     <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Roboto&display=swap" rel="stylesheet">
