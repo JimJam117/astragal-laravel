@@ -18,7 +18,7 @@ const AlbumSingle = (props) => {
 
     // paginaton
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(2);
+    const [postsPerPage, setPostsPerPage] = useState(12);
     const [isLastPage, setIsLastPage] = useState(false);
 
     let indexOfLastPost = currentPage * postsPerPage;
@@ -27,6 +27,18 @@ const AlbumSingle = (props) => {
     const [isFetching,setIsFetching] = useState(false);
     const mountedRef = useRef(true);
  
+    const recalcPagination = (newPage) => {
+        setCurrentPage(newPage);
+
+        let postsData = {...posts};
+
+        const postsInAlbum = postsData.posts.filter((post) => post.category_id == props.match.params.id);
+        // add the current range of posts to the state
+        let currentPosts = postsInAlbum.slice(indexOfFirstPost, indexOfLastPost);
+        indexOfLastPost >= postsInAlbum.length ? setIsLastPage(true) : setIsLastPage(false);
+        setPosts({...postsData, currentPosts});
+    }
+
     const fetchItem = async (apiUrl = '/api/category/' + props.match.params.id) =>  {
             
         await fetch(apiUrl, {signal})
@@ -122,17 +134,19 @@ const AlbumSingle = (props) => {
         };
     }, [setIsFetching]);
 
-
+    useEffect(() => {
+        if(!loading && !isFetching) {
+        recalcPagination(currentPage);
+    }
+    }, [currentPage])
 
     // paginator page functions
     const nextPage = () => {
         setCurrentPage(currentPage + 1);
-        setLoading(true);
     }
 
     const prevPage = () => {
         setCurrentPage(currentPage - 1);
-        setLoading(true);
     }
 
 

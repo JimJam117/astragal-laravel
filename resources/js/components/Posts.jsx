@@ -15,7 +15,7 @@ const Posts = () => {
 
     // paginaton
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(9);
+    const [postsPerPage, setPostsPerPage] = useState(12);
     const [isLastPage, setIsLastPage] = useState(false);
 
     let indexOfLastPost = currentPage * postsPerPage;
@@ -24,6 +24,17 @@ const Posts = () => {
     const [isFetching,setIsFetching] = useState(false);
     const mountedRef = useRef(true);
  
+    const recalcPagination = (newPage) => {
+        setCurrentPage(newPage);
+
+        let data = {...state};
+
+        let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
+        indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);
+        setState({...data, currentPosts});
+        
+    }
+
     const fetchItems = async (apiUrl = `/api/post`) =>  {
             
         await fetch(apiUrl, {signal})
@@ -51,7 +62,7 @@ const Posts = () => {
                 // add the current range of posts to the state
                 let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
                 indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);
-                setState({...data, currentPosts});
+                setState({...data, currentPosts});    
                 setLoading(false);
                 setIsFetching(false);
             }
@@ -93,16 +104,20 @@ const Posts = () => {
     }, [setIsFetching]);
 
 
+    useEffect(() => {
+        if(!loading && !isFetching) {
+        recalcPagination(currentPage);
+    }
+    }, [currentPage])
+    
 
     // paginator page functions
     const nextPage = () => {
         setCurrentPage(currentPage + 1);
-        setLoading(true);
     }
 
     const prevPage = () => {
         setCurrentPage(currentPage - 1);
-        setLoading(true);
     }
 
     return (
