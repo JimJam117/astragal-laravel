@@ -67,12 +67,10 @@ const PostSingle = (props) => {
                     {/* <!--IMAGE--> */}
                     <div className="single_image_container">
                     <Slider {...settings}>
-                    <div className="slide-obj"><img src={state.post.image} alt={state.post.title} /></div>
-                    {/* <div>1</div> */}
+                   <img src={state.post.image} alt={state.post.title} />
                     {
                         extraImages.map(extraImage => {
-                            return <div className="slide-obj"><img key={extraImage.id} src={extraImage.image}/></div>
-                            // return <div>1</div>
+                            return <img key={extraImage.id} src={extraImage.image}/>
                         })
                     }
                     </Slider>

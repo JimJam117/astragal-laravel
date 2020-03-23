@@ -21,3 +21,7 @@ Route::resource('image', 'Api\ImageController');
 Route::resource('post', 'Api\PostController');
 Route::resource('category', 'Api\CategoryController');
 Route::get('/post-images/{id}', 'Api\ImageController@show_images_in_post');
+Route::get('/pref', function() {
+    $pref = \App\Pref::first();
+    return response()->json($pref);
+});
