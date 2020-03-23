@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import Header from './partials/Header'
-import Footer from './partials/Footer'
+import Header from './partials/Header';
+import Loading from './partials/Loading';
+import Footer from './partials/Footer';
 import {Link, Redirect} from 'react-router-dom'
 
 const Search = (props) => {
@@ -58,6 +59,11 @@ const Search = (props) => {
         loading ? fetchItems() : null;
     });
 
+    // if query changes, set loading to true
+    useEffect(() => {
+        setLoading(true);
+    }, [props.match.params.query]);
+    
 
     // paginator page functions
     const nextPage = () => {
@@ -75,45 +81,37 @@ const Search = (props) => {
             <Header />
 
             <div id="mainContent" className="main_content">
-      
-                <div className="mainGallery">
+            { loading ? <Loading text="Searching..." /> :
+                <div>
+                    <div className="mainGallery">
+                        <div className="gal_area_container">
+                            Search: {props.match.params.query}
+                            <div className="gal_area">
+                            { state.currentPosts.map((post) => { 
+                                    return (
+                                        <Link key={post.id} style={{ "backgroundImage" : `url('${post.image}')`}} className="image_link" to={`post/${post.id}`}>
+                                            <div className="filter">
+                                                <h2 className="name">{post.title}</h2>  
+                                            </div>
+                                        </Link>
+                                    )
+                                })
+                            }
+                            </div>
+                        </div>
+                    </div>
 
-        { loading ? "loading" :
-
-      <div className="gal_area_container">
-          Search: {props.match.params.query}
-        <div className="gal_area">
-        {state.currentPosts.map((post) => { 
-            return (
-            <Link key={post.id} style={{ "backgroundImage" : " url('img/uploads/image.5e740cac5a93b5.27426162.png');"}} className="image_link" to={`post/${post.id}`}>
-                <div className="filter">
-                    <h2 className="name">{post.title}</h2>  
+                    {/* Paginator Buttons */}
+                    <div class="frontend_pagination_container">
+                        {currentPage > 1 && <button onClick={() => prevPage()}>Prev page</button>}
+                        {!isLastPage && <button onClick={() => nextPage()}>Next page</button>}
+                    </div>
                 </div>
-            </Link>
-           )
-        })
+            }
 
-        }
-        </div>
-  </div>
-}
-
- 
-</div>
-
-{/* Paginator Buttons */}
-{!loading &&
-    <div class="frontend_pagination_container">
-        {currentPage > 1 && <button onClick={() => prevPage()}>Prev page</button>}
-        {!isLastPage && <button onClick={() => nextPage()}>Next page</button>}
-    </div>
-}
-
-<Footer></Footer>
+            <Footer></Footer>
                 
-            </div>
-            
-            
+            </div>  
         </div>
     );
 }

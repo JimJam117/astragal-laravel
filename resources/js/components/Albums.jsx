@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Header from './partials/Header'
 import Footer from './partials/Footer'
+import Loading from './partials/Loading'
 import {Link} from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
 
@@ -39,7 +40,6 @@ const Albums = () => {
         loading ? fetchItems() : null;
     });
 
-
     // paginator page functions
     const nextPage = () => {
         setCurrentPage(currentPage + 1);
@@ -56,7 +56,7 @@ const Albums = () => {
             <Header />
 
             <div id="mainContent" className="main_content">
-                {loading ? "loading..." : 
+                {loading ? <Loading /> : 
                     <div>
                         <div class="alb_area_container"> 
                             <div class="alb_area">

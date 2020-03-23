@@ -1,10 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Link, Redirect} from 'react-router-dom';
+import {Link, Redirect, useHistory} from 'react-router-dom';
 
 const Header = () => {
 
     const [burgerMenu, setburgerMenu] = useState(false);
     const [search, setSearch] = useState("");
+
+    const history = useHistory();
 
     const handleSearchForm = (e) => {
       e.preventDefault();
@@ -13,7 +15,8 @@ const Header = () => {
 
     const searchSubmit = (e) => {
       e.preventDefault();
-      window.location = `/search/${search}`;
+      history.push(`/search/${search}`);
+
     }
 
     const toggleBurgerMenu = () => setburgerMenu(!burgerMenu);

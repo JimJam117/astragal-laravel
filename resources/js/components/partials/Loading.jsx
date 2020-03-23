@@ -1,7 +1,7 @@
 import React from 'react'
 import FadeLoader from "react-spinners/FadeLoader";
 
-export default function Loading() {
+export default function Loading(props) {
     return (
         <div className ="loading-page">
         <FadeLoader
@@ -12,6 +12,7 @@ export default function Loading() {
           color={"#555"}
           loading={true}
         />
+        <p>{props.text}</p>
         </div>
     )
 }

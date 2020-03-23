@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 import Header from './partials/Header'
 import Footer from './partials/Footer'
+import Loading from './partials/Loading'
 import {Link} from 'react-router-dom'
 import Slider from "react-slick";
 
@@ -58,7 +59,7 @@ const PostSingle = (props) => {
             <Header></Header>
         <div id="mainContent" className="main_content">
             
-        {loading ? <div>loading</div> :
+        {loading ? <Loading /> :
         <article className="single">
    
                 {props.match.params.body}
@@ -95,21 +96,19 @@ const PostSingle = (props) => {
 
                 {/* <!--RIGHT SECTION--> */}
                 <div className="single_right">
+
                     {/* <!--TITLE--> */}
                     <h2> {state.post.title} </h2>
 
                     {/* <!--ALBUM--> */}
-                    
                     {state.post.category_id == 0 ? null : 
                         <p className="detail"> 
                             <Link to={`/album/${state.post.category_id}`}>This post is a part of {state.category.title}</Link>
                         </p>
                     }
                        
-
                     {/* <!--DESCRIPTION--> */}
                     <div className="single_desc"> {ReactHtmlParser(state.post.body)}  </div>
-
                 </div>
     
     </article>

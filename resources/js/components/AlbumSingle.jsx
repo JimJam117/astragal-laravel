@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Header from './partials/Header'
+import Loading from './partials/Loading'
 import Footer from './partials/Footer'
 import {Link} from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser'
@@ -70,7 +71,7 @@ const AlbumSingle = (props) => {
         <Header></Header>
 
         <div id="mainContent" className="main_content">
-            {loading ? "loading..." : 
+            {loading ? <Loading />: 
                 <div>
                     <div class="album_single_container">
                         <div class="album_single_area">
