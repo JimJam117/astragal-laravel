@@ -16,7 +16,7 @@ const Albums = () => {
     
     // paginaton
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(6);
     const [isLastPage, setIsLastPage] = useState(false);
 
     let indexOfLastPost = currentPage * postsPerPage;
