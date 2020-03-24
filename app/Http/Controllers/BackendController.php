@@ -129,6 +129,25 @@ class BackendController extends Controller
                 'category_id' => $data['category_id'],
                 'image' => $imgPathWithStorage,
             ]);
+
+            $post = Post::where('image', $imgPathWithStorage)->firstOrFail();
+
+            if(in_array('gif', explode('.', $post->image))){
+                $post->update([
+                    'thumbnail' => $post->image,
+                    'title' => $post->title." GIF",
+            ]);
+            }
+            else{
+                $img = InterventionImage::make(public_path($post->image))->fit(335, 225, function ($constraint) {
+                    $constraint->upsize();
+                })->encode('webp');
+                $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
+                $img->save(public_path($name));
+                $post->update([
+                    'thumbnail' => $name,
+                ]);
+            }
         }
         else{ return "error with image upload"; }
 
@@ -167,6 +186,23 @@ class BackendController extends Controller
                'category_id' => $data['category_id'],
                'image' => $imgPathWithStorage,
            ]);
+
+           if(in_array('gif', explode('.', $post->image))){
+            $post->update([
+                'thumbnail' => $post->image,
+                'title' => $post->title." GIF",
+            ]);
+            }
+            else{
+                $img = InterventionImage::make(public_path($post->image))->fit(335, 225, function ($constraint) {
+                    $constraint->upsize();
+                })->encode('webp');
+                $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
+                $img->save(public_path($name));
+                $post->update([
+                    'thumbnail' => $name,
+                ]);
+            }
        }
        else{
         $post->update([
@@ -220,8 +256,8 @@ class BackendController extends Controller
                 'title' => $data['title'],
                 'body' => $purified_body,
                 'image' => $imgPathWithStorage,
+                'thumbnail' => $imgPathWithStorage
             ]);
-        }
         else{ return "error with image upload"; }
 
         return redirect("/backend/albums");
@@ -254,9 +290,10 @@ class BackendController extends Controller
            'title' => $data['title'],
            'body' => $purified_body,
            'image' => $imgPathWithStorage,
+           'thumbnail' => $imgPathWithStorage
        ]);
-   }
-   else{
+        }
+        else{
     $category->update([
         'title' => $data['title'],
         'body' => $purified_body,
@@ -268,27 +305,6 @@ class BackendController extends Controller
 
 
 
-    // public function allPostsToThumbs(){
-    //     $posts = Posts::all();
-
-    //     foreach ($posts as $post) {
-    //         //$post->thumbnail = "thumbNail";
-    //         $img = InterventionImage::make(public_path($post->image))->fit(335,225);
-    //         $img->save();
-            
-    //         $imgPath = ()->store('uploads', 'public');
-
-    //         // adds the storage dir to the front of the path
-    //         $imgPathWithStorage = '/storage/' . $imgPath;
-
-    //         $category->update([
-    //             'title' => $data['title'],
-    //             'body' => $purified_body,
-    //             'image' => $imgPathWithStorage,
-    //         ]);
-    //     } 
-
-    // } 
 
 
     public function runThumbnails() {
