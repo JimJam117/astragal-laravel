@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image as InterventionImage;
 use Purifier;
 use \App\Post;
 use \App\Category;
@@ -18,8 +19,6 @@ class BackendController extends Controller
         "HTML.SafeIframe"      => 'true',
         "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
     ];
-
-
 
 
 
@@ -269,15 +268,58 @@ class BackendController extends Controller
 
 
 
+    // public function allPostsToThumbs(){
+    //     $posts = Posts::all();
+
+    //     foreach ($posts as $post) {
+    //         //$post->thumbnail = "thumbNail";
+    //         $img = InterventionImage::make(public_path($post->image))->fit(335,225);
+    //         $img->save();
+            
+    //         $imgPath = ()->store('uploads', 'public');
+
+    //         // adds the storage dir to the front of the path
+    //         $imgPathWithStorage = '/storage/' . $imgPath;
+
+    //         $category->update([
+    //             'title' => $data['title'],
+    //             'body' => $purified_body,
+    //             'image' => $imgPathWithStorage,
+    //         ]);
+    //     } 
+
+    // } 
 
 
+    public function runThumbnails() {
+        $posts = Category::all();
 
+        foreach($posts as $post){
+            if(in_array('gif', explode('.', $post->image))){
+                $post->update([
+                    'thumbnail' => $post->image,
+                    'title' => $post->title." GIF",
+                ]);
+            }
+            else{
+                $img = InterventionImage::make(public_path($post->image))->fit(335, 225, function ($constraint) {
+                    $constraint->upsize();
+                })->encode('webp');
+                $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
+                $img->save(public_path($name));
+                $post->update([
+                    'thumbnail' => $name,
+                ]);
+            }
+        
+        }
 
+        dd([$posts]);
+    }
 
     public function about() {
-        dd(Post::all());
+     
         return view('backend.about');
-
     }
 
     public function delete_confirm_post($id) {

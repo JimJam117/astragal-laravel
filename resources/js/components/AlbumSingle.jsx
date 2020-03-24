@@ -164,7 +164,7 @@ const AlbumSingle = (props) => {
                             <div className="album_single_desc">{ReactHtmlParser(state.category.body)}</div>
                         </div>
                         <div className="album_posts_section_header">
-                                Posts within <span className="italic">All</span>
+                                Posts within <span className="italic">{state.category.title}</span>
                         </div>
 
                         <div className="gal_area">      
@@ -174,7 +174,7 @@ const AlbumSingle = (props) => {
                                     return null;
                                     }
                                     return (
-                                        <Link key= {post.id} style={{ backgroundImage : `url(${post.image})`}} className="image_link" to={`/post/${post.id}`}>
+                                        <Link key= {post.id} style={{ backgroundImage : `url(${post.thumbnail})`}} className="image_link" to={`/post/${post.id}`}>
                                             <div className="filter">
                                                 <h2 className="name name_album_single"> {post.title}</h2>
                                             </div>

@@ -134,7 +134,7 @@ const Albums = () => {
                                 state.currentItems.map((category) => {
                                     return (
                                     <Link key={category.id} className="album_link" to={`/album/${category.id}`}>
-                                        <div className="album_link_img" style={{ "backgroundImage" : `url(${category.image})`}}></div>
+                                        <div className="album_link_img" style={{ "backgroundImage" : `url(${category.thumbnail})`}}></div>
 
                                         <div className="album_link_text">
                                             <h2 className="album_link_name">{category.title}</h2>

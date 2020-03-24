@@ -133,7 +133,7 @@ const Posts = () => {
                                 {state.currentPosts.map((post) => { 
                                     return (
                                     <Link   key={post.id}
-                                            style={{ backgroundImage:  `url('${post.image}')` }}
+                                            style={{ backgroundImage:  `url('${post.thumbnail}')` }}
                                             className="image_link" to={`post/${post.id}`}>
 
                                         <div className="filter">
