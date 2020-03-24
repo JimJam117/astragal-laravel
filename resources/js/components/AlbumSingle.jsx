@@ -185,9 +185,10 @@ const AlbumSingle = (props) => {
                         </div> 
                     </div>
 
+                    {/* Paginator Buttons */}
                     <div className="frontend_pagination_container">
-                        {currentPage > 1 && <button onClick={() => prevPage()}>Prev page</button>}
-                        {!isLastPage && <button onClick={() => nextPage()}>Next page</button>}
+                        {currentPage > 1 && <button className="pagination_button" onClick={() => prevPage()}><i class="fas fa-arrow-circle-left"></i></button>}
+                        {!isLastPage && <button className="pagination_button" onClick={() => nextPage()}><i class="fas fa-arrow-circle-right"></i></button>}
                     </div>
                 </div>
             }

@@ -114,6 +114,8 @@ const PostSingle = (props) => {
         className: 'slick-centered',
         arrows: true,
         dots: true,
+        autoplay: true,
+        autoplaySpeed: 6000,
         infinite: true,
         speed: 500,
         slidesToShow: 1,

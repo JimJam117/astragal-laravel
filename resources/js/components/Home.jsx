@@ -179,8 +179,8 @@ const Home = () => {
                                 <h2 className="SectionTitle ">About Me</h2>
                                 <div className="aboutSection">
                                     <img src='/img/pref/profilePic.jpeg' alt="Hey look it me"/>
-                                    <p>I am a 19-year-old Art and Design student at Bedford College. In the future I
-                                        hope to study an digital media related to field at university in the future.
+                                    <p> 
+                                        {pref.about_section}
                                     </p>
 
                                 </div>

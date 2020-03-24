@@ -5,6 +5,27 @@
     padding: 0;
   }
   
+  .pagination_button{
+    font-size: 2.5rem;
+    margin: 1em 0.5em 0;
+    background: none;
+    border: none;
+    transition: 0.2s;
+  }
+  .pagination_button:hover{
+    color: gray;
+  }
+
+
+  .slick-prev:before, .slick-next:before {
+    font-family: 'slick';
+    font-size: 2rem !important;
+    line-height: 1;
+    opacity: .75;
+    color: black !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
   .slick-slide img {
     height: calc(50vh);
