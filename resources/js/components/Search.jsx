@@ -117,7 +117,7 @@ const Search = (props) => {
                                 <div className="gal_area">
                                 { state.currentPosts.map((post) => { 
                                         return (
-                                            <Link key={post.id} style={{ "backgroundImage" : `url('${post.image}')`}} className="image_link" to={`/post/${post.id}`}>
+                                            <Link key={post.id} style={{ "backgroundImage" : `url('${post.thumbnail}')`}} className="image_link" to={`/post/${post.id}`}>
                                                 <div className="filter">
                                                     <h2 className="name">{post.title}</h2>  
                                                 </div>

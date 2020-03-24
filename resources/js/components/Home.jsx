@@ -155,7 +155,7 @@ const Home = () => {
                                                                 return (
                                                                     <Link 
                                                                         key={post.id}
-                                                                        style={{backgroundImage: `url('${post.image}')`}} 
+                                                                        style={{backgroundImage: `url('${post.thumbnail}')`}} 
                                                                         className="image_link"
                                                                         to={`/post/${post.id}`}>
 

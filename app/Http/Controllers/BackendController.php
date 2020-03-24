@@ -258,6 +258,7 @@ class BackendController extends Controller
                 'image' => $imgPathWithStorage,
                 'thumbnail' => $imgPathWithStorage
             ]);
+            }
         else{ return "error with image upload"; }
 
         return redirect("/backend/albums");
