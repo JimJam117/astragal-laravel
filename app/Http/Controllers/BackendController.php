@@ -139,11 +139,12 @@ class BackendController extends Controller
             ]);
             }
             else{
-                $img = InterventionImage::make(public_path($post->image))->fit(335, 225, function ($constraint) {
+                
+                $img = InterventionImage::make("https://portfolio.london24racing.com" . $post->image)->fit(335, 225, function ($constraint) {
                     $constraint->upsize();
                 })->encode('webp');
                 $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
-                $img->save(public_path($name));
+                $img->save($name);
                 $post->update([
                     'thumbnail' => $name,
                 ]);
@@ -194,11 +195,11 @@ class BackendController extends Controller
             ]);
             }
             else{
-                $img = InterventionImage::make(public_path($post->image))->fit(335, 225, function ($constraint) {
+                $img = InterventionImage::make("https://portfolio.london24racing.com" . $post->image)->fit(335, 225, function ($constraint) {
                     $constraint->upsize();
                 })->encode('webp');
                 $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
-                $img->save(public_path($name));
+                $img->save($name);
                 $post->update([
                     'thumbnail' => $name,
                 ]);
