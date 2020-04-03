@@ -12,6 +12,7 @@ use \App\Image;
 
 class BackendController extends Controller
 {
+    const ACTUAL_PATH = "https://portfolio.london24racing.com";
     // purifier config 
     public $purifierConfig = [
         'HTML.Trusted'=>'true',
@@ -140,10 +141,11 @@ class BackendController extends Controller
             }
             else{
                 
-                $img = InterventionImage::make("https://portfolio.london24racing.com" . $post->image)->fit(335, 225, function ($constraint) {
+                $img = InterventionImage::make(self::ACTUAL_PATH . $post->image)->fit(335, 225, function ($constraint) {
                     $constraint->upsize();
                 })->encode('webp');
-                $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
+                
+                $name = 'storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
                 $img->save($name);
                 $post->update([
                     'thumbnail' => $name,
@@ -195,10 +197,11 @@ class BackendController extends Controller
             ]);
             }
             else{
-                $img = InterventionImage::make("https://portfolio.london24racing.com" . $post->image)->fit(335, 225, function ($constraint) {
+                $img = InterventionImage::make(self::ACTUAL_PATH . $post->image)->fit(335, 225, function ($constraint) {
                     $constraint->upsize();
                 })->encode('webp');
-                $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
+         
+                $name = 'storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
                 $img->save($name);
                 $post->update([
                     'thumbnail' => $name,
@@ -323,7 +326,7 @@ class BackendController extends Controller
                 $img = InterventionImage::make(public_path($post->image))->fit(335, 225, function ($constraint) {
                     $constraint->upsize();
                 })->encode('webp');
-                $name = '/storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
+                $name = 'storage/uploads/thumbnails/' . uniqid('', true) . '.webp';
                 $img->save(public_path($name));
                 $post->update([
                     'thumbnail' => $name,
@@ -336,7 +339,7 @@ class BackendController extends Controller
     }
 
     public function about() {
-     
+
         return view('backend.about');
     }
 
