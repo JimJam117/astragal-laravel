@@ -18,9 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('image', 'Api\ImageController');
+
+Route::get('post/paginated', 'Api\PostController@get_paginated_posts');
 Route::resource('post', 'Api\PostController');
+
+
 Route::resource('category', 'Api\CategoryController');
+
+
 Route::get('/post-images/{id}', 'Api\ImageController@show_images_in_post');
+
 Route::get('/pref', function() {
     $pref = \App\Pref::first();
     return response()->json($pref);

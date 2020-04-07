@@ -4,123 +4,73 @@ import Footer from './partials/Footer'
 import Loading from './partials/Loading'
 import {Link} from 'react-router-dom'
 
+
 const Posts = () => {
 
     // abort controller
     var controller = new AbortController();
     var signal = controller.signal;
 
-    const [state, setState] = useState({});
+
     const [loading, setLoading] = useState(true);
+    const [results, setResults] = useState([]);
+    const [posts, setPosts] = useState([]);
 
-    // paginaton
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage, setPostsPerPage] = useState(12);
-    const [isLastPage, setIsLastPage] = useState(false);
+    // pagination state
+    const [currentPage, setCurrentPage] = useState();
+    const [lastPage, setLastPage] = useState();
 
-    let indexOfLastPost = currentPage * postsPerPage;
-    let indexOfFirstPost = indexOfLastPost - postsPerPage;
+    // pagination function
+    const changePage = (pageToChangeTo) => {
+        if(pageToChangeTo < 1 || pageToChangeTo > lastPage){
+            console.log("Page to change to: " + pageToChangeTo + " is not within boundries");
+        }
+        else {
+            setCurrentPage(pageToChangeTo);
+            setLoading(true);
+        }
+    }
 
-    const [isFetching,setIsFetching] = useState(false);
-    const mountedRef = useRef(true);
- 
-    const recalcPagination = (newPage) => {
-        setCurrentPage(newPage);
 
-        let data = {...state};
-
-        let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
-        indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);
-        setState({...data, currentPosts});
+    const fetchItems = async (apiUrl = `/api/post/paginated?page=${currentPage}`) =>  {
+        console.log("load");
+                await fetch(apiUrl, {signal})
+                    .then(async (response) => {
+                        
+                        //throw errors if issues
+                        if (response.status === 500) {
+                            console.log("500");
+                        }
+                        else if(response.status === 404) {
+                            console.log("404");
+                        }
+                        else if(response.status === 419) {
+                            console.log("419");
+                        }
         
-    }
+                        const data = await response.json();
 
-    const fetchItems = async (apiUrl = `/api/post`) =>  {
-            
-        await fetch(apiUrl, {signal})
-            .then((response) => {
+                        console.log(currentPage);
+                        setResults(data);
 
-                //throw errors if issues
-                if (response.status === 500) {
-                    throw new Error("500");
-                }
-                else if(response.status === 404) {
-                    throw new Error("404");
-                }
-                else if(response.status === 419) {
-                    throw new Error("419");
-                }
-                else if(response.status === 429) {
-                    throw new Error("429");
-                }
+                        setCurrentPage(data.posts.current_page);
+                        setLastPage(data.posts.last_page);
 
-                console.log(["post from posts", response]);
-                return response.json();
-
-            }).then(data => {
-            if(mountedRef.current){
-                // add the current range of posts to the state
-                let currentPosts = data.posts.slice(indexOfFirstPost, indexOfLastPost);
-                indexOfLastPost >= data.posts.length ? setIsLastPage(true) : setIsLastPage(false);
-                setState({...data, currentPosts});    
-                setLoading(false);
-                setIsFetching(false);
+                        setPosts(data.posts.data);
+                        setLoading(false);
+                })
             }
-        })
-
-        //err catch
-        .catch((e) => {
-            if (e.name !== "AbortError") {
-                if (e.message === "404" || e.name === "TypeError") {
-                    window.location.href = "/not-found";
-                }
-                else if (e.message === "500") {
-                    window.location.href = "/server-error";
-                }
-                else if (e.message === "419") {
-                    window.location.href = "/page-expired";
-                }
-                else if (e.message === "429") {
-                    window.location.href = "/too-many-requests";
-                }
-            }
-        });
-    }
 
     useEffect(() => {
-        if(loading && !isFetching) {
-            setTimeout(() => {
-                setIsFetching(true);
-                fetchItems();
-            }, 2000);
-        };
+        if (loading) {fetchItems()}
         return () => {
-            mountedRef.current = false;
-            if(isFetching){
-                controller.abort();
-                setIsFetching(false);
-            }
+            controller.abort();
         };
-    }, [setIsFetching]);
-
-
-    useEffect(() => {
-        if(!loading && !isFetching) {
-        recalcPagination(currentPage);
-    }
-    }, [currentPage])
+    }, [loading])
     
 
-    // paginator page functions
-    const nextPage = () => {
-        setCurrentPage(currentPage + 1);
-    }
 
-    const prevPage = () => {
-        setCurrentPage(currentPage - 1);
-    }
-
-    return (
+    return(
         <div>
             <Header />
 
@@ -130,7 +80,7 @@ const Posts = () => {
                     <div className="mainGallery">
                         <div className="gal_area_container">
                             <div className="gal_area">
-                                {state.currentPosts.map((post) => { 
+                                {posts.map((post) => { 
                                     return (
                                     <Link   key={post.id}
                                             style={{ backgroundImage:  `url('${post.thumbnail}')` }}
@@ -148,8 +98,17 @@ const Posts = () => {
                     </div>
                     {/* Paginator Buttons */}
                     <div className="frontend_pagination_container">
-                        {currentPage > 1 && <button className="pagination_button" onClick={() => prevPage()}><i class="fas fa-arrow-circle-left"></i></button>}
-                        {!isLastPage && <button className="pagination_button" onClick={() => nextPage()}><i class="fas fa-arrow-circle-right"></i></button>}
+                    <p className="pagination-label">Page {currentPage}</p>
+                        {/* if the current page isn't 1, show last page button */}
+                        {currentPage !== 1 ?
+                            <button className="pagination_button" onClick={() => changePage(currentPage - 1)}><i class="fas fa-arrow-circle-left"></i></button> :
+                            null
+                        }
+                        {/* if the current page isn't equal to the last page, show next page button */}
+                        {currentPage !== lastPage ?
+                            <button className="pagination_button" onClick={() => changePage(currentPage + 1)}><i class="fas fa-arrow-circle-right"></i></button> :
+                            null
+                        }
                     </div>
                 </div>
         }
@@ -157,7 +116,12 @@ const Posts = () => {
                 <Footer></Footer>       
             </div> 
         </div>
-    );
+    ) 
+
 }
 
 export default Posts;
+
+
+
+

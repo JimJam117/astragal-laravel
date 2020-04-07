@@ -9,6 +9,21 @@ use \App\Category;
 
 class PostController extends Controller
 {
+
+    function paginatePosts($paginate) {
+        return \App\Post::orderBy('updated_at', 'DESC')->where("deleted_at", null)->paginate($paginate);
+    }
+
+    public function get_paginated_posts() {
+        $posts = self::paginatePosts(12);
+        $recent_post = $posts->first();
+
+        $categories = Category::orderBy('updated_at', 'DESC')->where("deleted_at", null)->get();
+        $recent_category = $categories->first();
+
+        return response()->json(["posts"=>$posts, "recent_category"=>$recent_category, "recent_post"=>$recent_post]);
+    }
+
     /**
      * Display a listing of the resource.
      *
