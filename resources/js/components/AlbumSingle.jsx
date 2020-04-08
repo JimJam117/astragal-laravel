@@ -174,7 +174,7 @@ const AlbumSingle = (props) => {
                                     return null;
                                     }
                                     return (
-                                        <Link key= {post.id} style={{ backgroundImage : `url(${post.thumbnail})`}} className="image_link" to={`/post/${post.id}`}>
+                                        <Link key= {post.id} style={{ backgroundImage : `url(${post.thumbnail[0] === "/" ? post.thumbnail : "/" + post.thumbnail})`}} className="image_link" to={`/post/${post.id}`}>
                                             <div className="filter">
                                                 <h2 className="name name_album_single"> {post.title}</h2>
                                             </div>
