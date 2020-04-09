@@ -123,8 +123,39 @@ const Home = () => {
         autoplaySpeed: 6000,
         infinite: true,
         speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        responsive: [
+            {
+              breakpoint: 2000,
+              settings: {
+                slidesToShow: 4,
+              }
+            },
+            {
+              breakpoint: 1420,
+              settings: {
+                slidesToShow: 3,
+              }
+            },
+            {
+                breakpoint: 850,
+                settings: {
+                    arrows: true,
+                    swipe: true,
+                  slidesToShow: 3,
+                }
+            },
+            {
+              breakpoint: 625,
+              settings: {
+                arrows: false,
+                swipe: true,
+                autoplaySpeed: 3000,
+                slidesToShow: 1,
+              }
+            }
+          ]
       };
   
 
