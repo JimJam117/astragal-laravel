@@ -5,6 +5,51 @@
     padding: 0;
   }
   
+  .slick-slide .recentPosts_image{
+    height: initial !important;
+  }
+
+  .recentPosts_image{
+    width: 100%;
+    transition: 0.1s;
+  }
+
+  .recentPosts_link{
+    
+  }
+
+  .recentPosts_slick{
+    padding: 1em;
+  }
+
+  .recentPosts_link_container{
+    position: relative;
+    width: 95%;
+    margin: 0 auto;
+    background-color: black;
+    
+  }
+
+  .recentPosts_link:hover .recentPosts_image{
+    
+    opacity: 0.4;
+  }
+
+  .recentPosts_link:hover .recentPosts_title{
+    opacity: 1;
+  }
+
+  .recentPosts_title{
+    position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+opacity: 0;
+color: #fff;
+font-weight: bold;
+transition: 0.1s;
+  }
+
   .pagination_button{
     font-size: 2.5rem;
     margin: 1em 0.5em 0;

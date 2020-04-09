@@ -1,10 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
 import ReactDOM from 'react-dom';
 import {Link} from 'react-router-dom';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import Header from './partials/Header';
 import Footer from './partials/Footer';
 import Loading from './partials/Loading';
+import Slider from "react-slick";
+
 
 const Home = () => {
 
@@ -110,6 +114,20 @@ const Home = () => {
         };
     }, [setIsFetching]);
 
+    var settings = {
+        className: 'recentPosts_slick',
+        arrows: true,
+        dots: false,
+        autoplay: true,
+        lazyLoad: true,
+        autoplaySpeed: 6000,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1
+      };
+  
+
     return (
         <div>
             <Header/>
@@ -148,28 +166,28 @@ const Home = () => {
                                 {state.posts.length > 0
                                     ? <div>
                                             <h2 className="SectionTitle">Recent Uploads</h2>
-                                            <div className="featuredImages recentPosts">
-                                                <div className="miniGallery">
+                                            <div className=" ">
+                                                
+                                                <Slider {...settings}>
                                                     {state.posts.map((post, i = 0) => {
-                                                            if (i < 6) {
+                                                            if (i < 12) {
                                                                 return (
                                                                     <Link 
                                                                         key={post.id}
-                                                                        style={{backgroundImage: `url('${post.thumbnail}')`}} 
-                                                                        className="image_link"
+                                                                        className="recentPosts_link"
+                                                                       style={{ position : "relative" }}
                                                                         to={`/post/${post.id}`}>
-
-                                                                        <div className="filter">
-                                                                            <h2 className="name">
-                                                                                {post.title}
-                                                                            </h2>
-                                                                        </div>
+                                                                            <div className="recentPosts_link_container">
+                                                                            <img className="recentPosts_image" src={post.thumbnail} style={{ width : "100%" }} alt=""></img>
+                                                                        <p className="recentPosts_title">{post.title}</p>
+                                                                            </div>                                 
                                                                     </Link>
                                                                 )
                                                             }
                                                             i++;
                                                         })}
-                                                </div>
+                                                    </Slider>
+                                             
 
                                             </div>
                                             <a className="viewMoreBtn" href="/posts">View More...</a>
