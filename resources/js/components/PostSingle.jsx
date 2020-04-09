@@ -119,7 +119,8 @@ const PostSingle = (props) => {
         infinite: true,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        lazyLoad: true,
       };
   
 
@@ -137,7 +138,7 @@ const PostSingle = (props) => {
                     {/* <!--IMAGE--> */}
                     <div className="single_image_container">
                     <Slider {...settings}>
-                   <img src={state.post.image} alt={state.post.title} />
+                   <img className="postSingle_image" src={state.post.image} alt={state.post.title} />
                     {
                         extraImages.map(extraImage => {
                             return <img key={extraImage.id} src={extraImage.image}/>
